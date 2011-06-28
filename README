@@ -1,0 +1,27 @@
+Intermodal 0.0.1
+
+=== Summary ===
+
+Intermodal lets you quickly put together a pure, JSON/XML-only RESTful web service.
+
+=== Features ===
+
+ - Declarative DSL for top-level, nested, and linked CRUD resource endpoints, producing dynamically generated resource controllers
+ - Override resource controller behavior
+ - Declarative DSL for Presenters (remap ORM to JSON/XML)
+ - Declarative DSL for Acceptors (remap and filter incoming data)
+ - Authentication mechanism using HTTP X- headers (similar to Rackspace Cloud API)
+ - API versioning
+
+=== Requirements ==
+
+Rails 3.0.x
+
+=== TODO ===
+
+ - Fix known bug with class reloading in development mode
+ - Not everything is packaged well
+ - Should include standardized paging
+ - Integration as Rails 3.1 Engine for versioning endpoints
+ - Cross-account authorization
+ - Override stock Rails 3.0 error handling to produce JSON/XML instead of HTML traces
