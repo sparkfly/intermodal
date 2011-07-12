@@ -14,7 +14,7 @@ module Intermodal
       end
 
       def api
-        @api || raise "Unimplemented"
+        raise "Unimplemented"
       end
     end
   end

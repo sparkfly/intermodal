@@ -8,7 +8,7 @@ module Intermodal
         include Intermodal::Controllers::Anonymous
 
         respond_to :xml, :json
-        self.responder = ResourceResponder
+        self.responder = Intermodal::ResourceResponder
 
         class_inheritable_accessor :model, :resource, :api
 
