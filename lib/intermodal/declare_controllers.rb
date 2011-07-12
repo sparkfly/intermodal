@@ -8,7 +8,7 @@ module Intermodal
 
     def resources(name, &blk)
       controller_name = _controller_name(name)
-      _create_controller(name, controller_name, blk, :ancestor => ResourceController, :api => self)
+      _create_controller(name, controller_name, blk, :ancestor => Intermodal::ResourceController, :api => self)
     end
 
     def nested_resources(parent_name, name, options = {}, &blk)
@@ -18,7 +18,7 @@ module Intermodal
       controller_name = _controller_name(name)
 
       _create_controller(name, controller_name, blk, 
-                         :ancestor => NestedResourceController, 
+                         :ancestor => Intermodal::NestedResourceController, 
                          :namespace => _namespace,
                          :model => options[:model],
                          :parent_resource => _parent_resource,
@@ -40,7 +40,7 @@ module Intermodal
       end
 
       controller = _create_controller(name, controller_name, customize_linking_resource, 
-                                      :ancestor => LinkingResourceController, 
+                                      :ancestor => Intermodal::LinkingResourceController, 
                                       :namespace => _namespace,
                                       :model => _model,
                                       :parent_resource => _parent_resource,

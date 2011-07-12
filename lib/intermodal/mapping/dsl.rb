@@ -16,7 +16,7 @@ module Intermodal
         def presentation_for(resource, &customizations)
           model = resource.to_s.camelize.constantize
 
-          model.send(:include, Models::Presentation)
+          model.send(:include, Intermodal::Models::Presentation)
           presenter_template = Class.new(Presenter)
           presenter_template._property_mapping = []
           presenter_template.instance_eval(&customizations)
