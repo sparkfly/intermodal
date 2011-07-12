@@ -1,3 +1,2 @@
 .*sw?
-*.gemspec
 pkg/
