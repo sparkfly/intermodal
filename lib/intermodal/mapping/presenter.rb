@@ -20,8 +20,8 @@ module Intermodal
           resource.class.name.demodulize.underscore
         end
 
-        def call(resource)
-          { model_name(resource) => map_attributes(resource) }
+        def call(resource, scope = :default)
+          { model_name(resource) => map_attributes(resource, scope) }
         end
       end
     end

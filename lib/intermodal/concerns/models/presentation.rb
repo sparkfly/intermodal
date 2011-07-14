@@ -6,11 +6,11 @@ module Intermodal
       attr_accessor :api
 
       def as_json(opt={})
-        presenter
+        presenter((opt || {})[:scope])
       end
 
-      def presenter
-        api.presents_resource(self)
+      def presenter(scope = :default)
+        api.presents_resource(self, scope || :default)
       end
 
       def api

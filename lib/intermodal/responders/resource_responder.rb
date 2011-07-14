@@ -9,7 +9,7 @@ module Intermodal
       elsif has_errors?
         display resource.errors, :status => :unprocessable_entity
       elsif post?
-        display resource, :status => :created, :location => api_location
+        display resource, :status => :created #, :location => api_location # Taken out because it requires some additional URL definitions
       else
         head :ok
       end

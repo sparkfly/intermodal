@@ -18,7 +18,7 @@ module Intermodal
 
           model.send(:include, Intermodal::Models::Presentation)
           presenter_template = Class.new(Presenter)
-          presenter_template._property_mapping = []
+          presenter_template._property_mappings = {}
           presenter_template.instance_eval(&customizations)
           presenters[resource.to_sym] = presenter_template
         end
@@ -28,7 +28,7 @@ module Intermodal
 
           #model.send(:include, Models::Acceptance)
           acceptor = Class.new(Acceptor)
-          acceptor._property_mapping = []
+          acceptor._property_mappings = {}
           acceptor.instance_eval(&customizations)
           acceptors[resource.to_sym] = acceptor
         end
@@ -63,12 +63,12 @@ module Intermodal
           model_name(resource.class)
         end
 
-        def presents_resource(resource) 
-          presenters[resource_name(resource)].call(resource)
+        def presents_resource(resource, scope = :default) 
+          presenters[resource_name(resource)].call(resource, scope)
         end
 
-        def accepts_resource(resource) 
-          accepts[resource_name(resource)].call(resource)
+        def accepts_resource(resource, scope = :default) 
+          accepts[resource_name(resource)].call(resource, scope)
         end
       end
     end

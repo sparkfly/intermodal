@@ -1,7 +1,7 @@
 module Intermodal
   module Mapping
     class Mapper
-      class_inheritable_accessor :_exclude_properties, :_property_mapping, :_mapping_strategy
+      class_inheritable_accessor :_exclude_properties, :_property_mappings, :_mapping_strategy
 
       INCLUDE_NILS = lambda { |h, resource, mapped_from, mapped_to| h[mapped_from] = map_attribute(resource, mapped_to) }
       EXCLUDE_NILS = lambda { |h, resource, mapped_from, mapped_to| a = map_attribute(resource, mapped_to); h[mapped_from] = a if a }
@@ -11,8 +11,9 @@ module Intermodal
           (self._exclude_properties ||= []).push *(args.map(&:to_s))
         end
 
-        def property_mapping
-          self._property_mapping ||= []
+        def property_mapping(scope = :default)
+          self._property_mappings ||= {}
+          self._property_mappings[scope] ||= []
         end
 
         # Examples:
@@ -20,13 +21,18 @@ module Intermodal
         #  maps :name
         #  maps :name, :as => lambda { |o| o.name.camelize }
         #  maps :name, :as => [ :first_name, :last_name, :suffix, :prefix ]
+        #  maps :name, :scope => :named
         #
         def maps(property, opts = {})
-          property_mapping.push [property, (opts[:as] ? opts[:as] : property)]
+          scopes = opts[:scope] || [ :default ]
+          scopes = (scopes.is_a?(Array) ? scopes : [ scopes ]) 
+          scopes.each do |scope|
+            property_mapping(scope).push [property, (opts[:as] ? opts[:as] : property)]
+          end
         end
 
-        def map_attributes(resource)
-          self._property_mapping.inject({}) { |m, p|
+        def map_attributes(resource, scope = :default)
+          (self._property_mappings[:default] + self._property_mappings[scope]).inject({}) { |m, p|
             m.tap { |h| self._mapping_strategy[h, resource, p[0], p[1]] }
           }.except(*self._exclude_properties)
         end
@@ -39,8 +45,8 @@ module Intermodal
           end
         end
 
-        def call(resource)
-          map_attributes(resource)
+        def call(resource, scope = :default)
+          map_attributes(resource, scope)
         end
       end
     end
