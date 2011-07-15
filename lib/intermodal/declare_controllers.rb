@@ -13,7 +13,7 @@ module Intermodal
 
     def nested_resources(parent_name, name, options = {}, &blk)
       _parent_model = options[:parent_model]
-      _parent_resource = parent_name.to_s.singularize.to_sym
+      _parent_resource_name = parent_name.to_s.singularize.to_sym
       _namespace = _module(parent_name)
       controller_name = _controller_name(name)
 
@@ -21,7 +21,7 @@ module Intermodal
                          :ancestor => Intermodal::NestedResourceController, 
                          :namespace => _namespace,
                          :model => options[:model],
-                         :parent_resource => _parent_resource,
+                         :parent_resource_name => _parent_resource_name,
                          :parent_model => _parent_model,
                          :api => self) 
     end
@@ -29,21 +29,21 @@ module Intermodal
     def link_resources_from(parent_name, options = {}, &blk)
       _model = options[:model]
       _parent_model = options[:parent_model]
-      _parent_resource = parent_name.to_s.singularize.to_sym
-      _target_resource = options[:to]
+      _parent_resource_name = parent_name.to_s.singularize.to_sym
+      _target_resource_name = options[:to]
       _namespace = _module(parent_name)
-      controller_name = _controller_name(_target_resource)
+      controller_name = _controller_name(_target_resource_name)
 
       customize_linking_resource = proc do
         let(:model) { _model }
-        let(:target_ids) { params[_target_resource] }
+        let(:target_ids) { params[_target_resource_name] }
       end
 
       controller = _create_controller(name, controller_name, customize_linking_resource, 
                                       :ancestor => Intermodal::LinkingResourceController, 
                                       :namespace => _namespace,
                                       :model => _model,
-                                      :parent_resource => _parent_resource,
+                                      :parent_resource => _parent_resource_name,
                                       :parent_model => _parent_model) 
       controller.instance_eval(&blk) if blk
     end
@@ -53,7 +53,7 @@ module Intermodal
     end
 
     # API: private
-    def _create_controller(resource_name, controller_name, customizations, options = {},  &blk)
+    def _create_controller(collection_name, controller_name, customizations, options = {},  &blk)
       _ancestor = options[:ancestor] || ApplicationController
       _namespace = options[:namespace] || Object
 
@@ -62,9 +62,9 @@ module Intermodal
       _namespace.const_set(controller_name, controller)
       Rails.logger.warn "Creating new resource controller: #{_namespace}::#{controller}"
 
-      controller.resource = resource_name
+      controller.collection_name = collection_name
       controller.model = options[:model] if options[:model]
-      controller.parent_resource = options[:parent_resource] if options[:parent_resource]
+      controller.parent_resource_name = options[:parent_resource_name] if options[:parent_resource_name]
       controller.parent_model = parent_model if options[:parent_model]
       controller.class_eval(&customizations) if customizations
       controller.api = options[:api] if options[:api]

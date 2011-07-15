@@ -10,11 +10,14 @@ module Intermodal
         respond_to :xml, :json
         self.responder = Intermodal::ResourceResponder
 
-        class_inheritable_accessor :model, :resource, :api
+        class_inheritable_accessor :model, :collection_name, :api
 
-        let(:model) { self.class.model || self.class.resource.to_s.classify.constantize }
-        let(:resource) { self.class.resource.to_s }
-        let(:resource_name) { resource.singularize }
+        let(:collection) { raise 'You must define collection' }
+        let(:resource) { raise 'You must define resource' }
+
+        let(:model) { self.class.model || self.class.collection_name.to_s.classify.constantize }
+        let(:collection_name) { self.class.collection_name.to_s } # TODO: This might already be defined in Rails 3.x
+        let(:resource_name) {collection_name.singularize }
         let(:model_name) { model.name.underscore.to_sym }
 
         let(:api) { self.class.api }
@@ -28,7 +31,7 @@ module Intermodal
       end
 
       def show
-        respond_with(object)
+        respond_with(resource)
       end
 
       def create
@@ -36,13 +39,13 @@ module Intermodal
       end
 
       def update
-        object.update_attributes(update_params)
-        respond_with(object)
+        resource.update_attributes(update_params)
+        respond_with(resource)
       end
 
       def destroy
-        object.destroy
-        respond_with(object)
+        resource.destroy
+        respond_with(resource)
       end
     end
   end
