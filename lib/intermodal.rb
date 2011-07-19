@@ -18,6 +18,25 @@ module Intermodal
 
   autoload :ResourceResponder, 'intermodal/responders/resource_responder'
 
+  # Authentication
+  # TOOD: Make this more configurable. Not everyone wants X-Auth-Token auth
+  module Rack
+    autoload :Auth, 'intermodal/rack/auth'
+  end
+
+  ActiveSupport.on_load(:before_initialize) do
+    Warden::Strategies.add(:x_auth_token) do
+      def valid?
+        env['HTTP_X_AUTH_TOKEN']
+      end
+
+      def authenticate!
+        a = AccessToken.authenticate!(env['HTTP_X_AUTH_TOKEN'])
+        a.nil? ? fail!("Could not log in") : success!(a)
+      end
+    end
+  end
+
   # Concerns
   autoload :Let, 'intermodal/concerns/let'
 
