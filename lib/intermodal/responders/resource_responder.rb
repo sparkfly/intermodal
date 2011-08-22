@@ -2,8 +2,7 @@ module Intermodal
   class ResourceResponder < ActionController::Responder
 
     # This is the common behavior for "API" requests, like :xml and :json.
-    def to_format
-
+    def respond
       if get?
         display resource
       elsif has_errors?
