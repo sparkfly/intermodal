@@ -13,6 +13,8 @@ module Intermodal
 
     use_renderers :json, :xml
 
+    self.responder = Intermodal::ResourceResponder
+
     # Major hax
     def render_to_body(options) 
       _handle_render_options(options)
