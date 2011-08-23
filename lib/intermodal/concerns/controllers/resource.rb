@@ -7,7 +7,7 @@ module Intermodal
         include Intermodal::Controllers::Accountability
         include Intermodal::Controllers::Anonymous
 
-        respond_to :xml, :json
+        respond_to :json, :xml
         self.responder = Intermodal::ResourceResponder
 
         class_inheritable_accessor :model, :collection_name, :api
@@ -21,8 +21,10 @@ module Intermodal
         let(:model_name) { model.name.underscore.to_sym }
 
         let(:api) { self.class.api }
+        let(:presenter) { api.presenters[model_name] }
         let(:acceptor) { api.acceptors[model_name] }
         let(:accepted_params) { acceptor.call(params[resource_name] || {}) }
+
       end
 
       # Actions

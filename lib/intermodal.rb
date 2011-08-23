@@ -12,6 +12,7 @@ module Intermodal
   end
 
   # Controller Templates
+  autoload :APIController,             'intermodal/controllers/api_controller'
   autoload :ResourceController,        'intermodal/controllers/resource_controller'
   autoload :NestedResourceController,  'intermodal/controllers/nested_resource_controller'
   autoload :LinkingResourceController, 'intermodal/controllers/linking_resource_controller'

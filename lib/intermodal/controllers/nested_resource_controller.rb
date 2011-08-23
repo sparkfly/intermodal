@@ -1,5 +1,5 @@
 module Intermodal
-  class NestedResourceController < ActionController::Base
+  class NestedResourceController < Intermodal::APIController
     include Intermodal::Controllers::Resource
 
     private

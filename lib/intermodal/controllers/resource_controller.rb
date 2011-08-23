@@ -1,5 +1,5 @@
 module Intermodal
-  class ResourceController < ActionController::Base
+  class ResourceController < Intermodal::APIController
     include Intermodal::Controllers::Resource
 
     private
