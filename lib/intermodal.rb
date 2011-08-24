@@ -17,7 +17,8 @@ module Intermodal
   autoload :NestedResourceController,  'intermodal/controllers/nested_resource_controller'
   autoload :LinkingResourceController, 'intermodal/controllers/linking_resource_controller'
 
-  autoload :ResourceResponder, 'intermodal/responders/resource_responder'
+  autoload :ResourceResponder,         'intermodal/responders/resource_responder'
+  autoload :LinkingResourceResponder,  'intermodal/responders/linking_resource_responder'
 
   # Authentication
   # TOOD: Make this more configurable. Not everyone wants X-Auth-Token auth
@@ -51,6 +52,7 @@ module Intermodal
   module Controllers
     autoload :Accountability,  'intermodal/concerns/controllers/accountability'
     autoload :Anonymous,       'intermodal/concerns/controllers/anonymous'
+    autoload :Presentation,    'intermodal/concerns/controllers/presentation'
     autoload :Resource,        'intermodal/concerns/controllers/resource'
     autoload :ResourceLinking, 'intermodal/concerns/controllers/resource_linking'
   end

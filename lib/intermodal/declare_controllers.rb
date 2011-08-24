@@ -44,7 +44,8 @@ module Intermodal
                                       :namespace => _namespace,
                                       :model => _model,
                                       :parent_resource => _parent_resource_name,
-                                      :parent_model => _parent_model) 
+                                      :parent_model => _parent_model,
+                                      :api => self) 
       controller.instance_eval(&blk) if blk
     end
 

@@ -18,34 +18,29 @@ module Intermodal
         let(:collection_name) { self.class.collection_name.to_s } # TODO: This might already be defined in Rails 3.x
         let(:resource_name) {collection_name.singularize }
         let(:model_name) { model.name.underscore.to_sym }
-
-        let(:api) { self.class.api }
-        let(:presenter) { api.presenters[model_name] }
-        let(:acceptor) { api.acceptors[model_name] }
-        let(:accepted_params) { acceptor.call(params[resource_name] || {}) }
       end
 
       # Actions
       def index
-        respond_with(collection)
+        respond_with(collection, :presenter => presenter)
       end
 
       def show
-        respond_with(resource)
+        respond_with(resource, :presenter => presenter)
       end
 
       def create
-        respond_with(model.create(create_params))
+        respond_with(model.create(create_params), :presenter => presenter)
       end
 
       def update
         resource.update_attributes(update_params)
-        respond_with(resource)
+        respond_with(resource, :presenter => presenter)
       end
 
       def destroy
         resource.destroy
-        respond_with(resource)
+        respond_with(resource, :presenter => presenter)
       end
     end
   end

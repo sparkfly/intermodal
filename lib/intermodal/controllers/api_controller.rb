@@ -11,6 +11,8 @@ module Intermodal
     include AbstractController::Callbacks
     include ActionController::Rescue
 
+    include Intermodal::Controllers::Presentation
+
     use_renderers :json, :xml
 
     self.responder = Intermodal::ResourceResponder

@@ -3,18 +3,14 @@ module Intermodal
     module Presentation
       extend ActiveSupport::Concern
 
-      attr_accessor :api
-
-      def as_json(opt={})
-        presenter((opt || {})[:scope])
+      def as_json(opts = {})
+        return presenter(opts) if opts && opts[:presenter]
+        super(opts)
       end
 
-      def presenter(scope = :default)
-        api.presents_resource(self, scope || :default)
-      end
-
-      def api
-        raise "Unimplemented"
+      def presenter(opts)
+        raise "Must pass :presenter" unless opts[:presenter]
+        opts[:presenter].call(self, opts[:scope] || :default)
       end
     end
   end

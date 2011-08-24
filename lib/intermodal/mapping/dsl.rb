@@ -13,21 +13,25 @@ module Intermodal
           self._presentation_description = blk
         end
 
+        # TODO: Consolidate with acceptance_for
         def presentation_for(resource, &customizations)
           model = resource.to_s.camelize.constantize
 
           model.send(:include, Intermodal::Models::Presentation)
           presenter_template = Class.new(Presenter)
+          presenter_template.api = self
           presenter_template._property_mappings = {}
           presenter_template.instance_eval(&customizations)
           presenters[resource.to_sym] = presenter_template
         end
 
+        # TODO: Consolidate with presentation_for
         def acceptance_for(resource, &customizations)
           model = resource.to_s.camelize.constantize
 
           #model.send(:include, Models::Acceptance)
           acceptor = Class.new(Acceptor)
+          acceptor.api = self
           acceptor._property_mappings = {}
           acceptor.instance_eval(&customizations)
           acceptors[resource.to_sym] = acceptor
