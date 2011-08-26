@@ -1,3 +1,5 @@
+require 'will_paginate'
+
 module Intermodal
 
   # Core
