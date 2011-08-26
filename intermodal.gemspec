@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ho-Sheng Hsiao"]
-  s.date = %q{2011-07-12}
+  s.date = %q{2011-08-26}
   s.description = %q{Declarative DSL for top-level, nested, linked CRUD resource endpoints; DSL for Presenters and Acceptors; API Versioning}
   s.email = %q{hosh@sparkfly.com}
   s.extra_rdoc_files = [
@@ -21,11 +21,14 @@ Gem::Specification.new do |s|
     "README",
     "Rakefile",
     "VERSION",
+    "intermodal.gemspec",
+    "lib/intermodal.rb",
     "lib/intermodal/base.rb",
     "lib/intermodal/concerns/acceptors/named_resource.rb",
     "lib/intermodal/concerns/acceptors/resource.rb",
     "lib/intermodal/concerns/controllers/accountability.rb",
     "lib/intermodal/concerns/controllers/anonymous.rb",
+    "lib/intermodal/concerns/controllers/presentation.rb",
     "lib/intermodal/concerns/controllers/resource.rb",
     "lib/intermodal/concerns/controllers/resource_linking.rb",
     "lib/intermodal/concerns/let.rb",
@@ -35,15 +38,23 @@ Gem::Specification.new do |s|
     "lib/intermodal/concerns/models/resource_linking.rb",
     "lib/intermodal/concerns/presenters/named_resource.rb",
     "lib/intermodal/concerns/presenters/resource.rb",
+    "lib/intermodal/controllers/api_controller.rb",
     "lib/intermodal/controllers/linking_resource_controller.rb",
     "lib/intermodal/controllers/nested_resource_controller.rb",
     "lib/intermodal/controllers/resource_controller.rb",
     "lib/intermodal/declare_controllers.rb",
-    "lib/intermodal/mapping.rb",
     "lib/intermodal/mapping/acceptor.rb",
     "lib/intermodal/mapping/dsl.rb",
     "lib/intermodal/mapping/mapper.rb",
-    "lib/intermodal/mapping/presenter.rb"
+    "lib/intermodal/mapping/presenter.rb",
+    "lib/intermodal/rack/auth.rb",
+    "lib/intermodal/responders/linking_resource_responder.rb",
+    "lib/intermodal/responders/resource_responder.rb",
+    "spec/rack/auth_spec.rb",
+    "spec/support/requests/linked_resource_helpers.rb",
+    "spec/support/requests/rack_helpers.rb",
+    "spec/support/requests/resource_helpers.rb",
+    "spec/support/requests/rfc2616_status_codes.rb"
   ]
   s.homepage = %q{http://github.com/hosh/intermodal}
   s.require_paths = ["lib"]
@@ -55,9 +66,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<will_paginate>, [">= 3.0.0"])
     else
+      s.add_dependency(%q<will_paginate>, [">= 3.0.0"])
     end
   else
+    s.add_dependency(%q<will_paginate>, [">= 3.0.0"])
   end
 end
 

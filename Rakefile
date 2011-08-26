@@ -30,6 +30,8 @@ begin
     gemspec.email = "hosh@sparkfly.com"
     gemspec.homepage = "http://github.com/hosh/intermodal"
     gemspec.authors = ["Ho-Sheng Hsiao"]
+
+    gemspec.add_dependency 'will_paginate', '>=3.0.0'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

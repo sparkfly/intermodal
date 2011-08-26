@@ -66,4 +66,12 @@ module Intermodal
     autoload :Resource,      'intermodal/concerns/presenters/resource'
     autoload :NamedResource, 'intermodal/concerns/presenters/named_resource'
   end
+
+  # Extensions
+  ActiveSupport.on_load(:after_initialize) do
+    # Make sure this loads after Will Paginate loads
+    require 'intermodal/will_paginate/collection'
+
+    ::WillPaginate::Collection.send(:include, Intermodal::WillPaginate::Collection)
+  end
 end
