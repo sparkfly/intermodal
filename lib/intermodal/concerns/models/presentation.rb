@@ -13,7 +13,7 @@ module Intermodal
       end
 
       def presentation(opts)
-        presenter(opts).call(self, opts[:scope] || :default)
+        presenter(opts).call(self, opts)
       end
     end
   end

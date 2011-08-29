@@ -45,8 +45,8 @@ module Intermodal
           end
         end
 
-        def call(resource, scope = :default)
-          map_attributes(resource, scope)
+        def call(resource, options = {})
+          map_attributes(resource, options[:scope] || :default)
         end
       end
     end
