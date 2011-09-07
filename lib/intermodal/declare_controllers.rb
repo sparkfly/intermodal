@@ -34,12 +34,14 @@ module Intermodal
       _namespace = _module(parent_name)
       controller_name = _controller_name(_target_resource_name)
 
+      collection_name = "#{_target_resource_name.to_s.singularize}_ids"
+
       customize_linking_resource = proc do
         let(:model) { _model }
         let(:target_ids) { params[_target_resource_name] }
       end
 
-      controller = _create_controller(name, controller_name, customize_linking_resource, 
+      controller = _create_controller(collection_name, controller_name, customize_linking_resource, 
                                       :ancestor => Intermodal::LinkingResourceController, 
                                       :namespace => _namespace,
                                       :model => _model,

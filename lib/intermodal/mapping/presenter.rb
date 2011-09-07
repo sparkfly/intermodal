@@ -22,8 +22,12 @@ module Intermodal
 
         def call(resource, options = {})
           _scope = options[:scope] || :default
-          
-          { model_name(resource) => map_attributes(resource, _scope) }
+
+          if options[:root]
+            { (options[:root].is_a?(TrueClass) ? model_name(resource) : options[:root]) => map_attributes(resource, _scope) }
+          else
+            map_attributes(resource, _scope)
+          end
         end
       end
     end

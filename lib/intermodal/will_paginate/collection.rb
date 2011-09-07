@@ -3,7 +3,7 @@ module Intermodal
     module Collection
       def as_json(*args)
         options = args.extract_options!
-        _collection_name = options.delete(:collection_name) || :collection
+        _collection_name = options.delete(:root) || :collection
         { _collection_name => self.to_a.as_json(options),
           :page => self.current_page.to_i,
           :total_pages => self.total_pages,
