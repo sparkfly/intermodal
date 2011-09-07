@@ -1,7 +1,6 @@
 require 'will_paginate'
 
 module Intermodal
-
   # Core
   autoload :Base,               'intermodal/base'
   autoload :DeclareControllers, 'intermodal/declare_controllers'
@@ -77,3 +76,5 @@ module Intermodal
     ::WillPaginate::Collection.send(:include, Intermodal::WillPaginate::Collection)
   end
 end
+
+require 'intermodal/config'
