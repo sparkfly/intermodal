@@ -14,6 +14,7 @@ module Intermodal
 
         let(:collection_name) { self.class.collection_name.to_s } # TODO: This might already be defined in Rails 3.x
         let(:presentation_root) { collection_name }
+        let(:presentation_scope) { nil } # Will default to :default scope
       end
 
       def index

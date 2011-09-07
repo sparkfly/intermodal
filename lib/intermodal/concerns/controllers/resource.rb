@@ -22,6 +22,7 @@ module Intermodal
         
         # Wrap JSON with root key?
         let(:presentation_root) { resource_name }
+        let(:presentation_scope) { nil } # Will default to :default scope
       end
 
       # Actions
