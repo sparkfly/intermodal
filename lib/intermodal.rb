@@ -71,9 +71,9 @@ module Intermodal
   # Extensions
   ActiveSupport.on_load(:after_initialize) do
     # Make sure this loads after Will Paginate loads
-    require 'intermodal/will_paginate/collection'
+    require 'intermodal/proxies/will_paginate'
 
-    ::WillPaginate::Collection.send(:include, Intermodal::WillPaginate::Collection)
+    ::WillPaginate::Collection.send(:include, Intermodal::Proxies::WillPaginate::Collection)
   end
 end
 
