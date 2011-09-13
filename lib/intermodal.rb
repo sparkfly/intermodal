@@ -28,6 +28,15 @@ module Intermodal
     autoload :Auth, 'intermodal/rack/auth'
   end
 
+  # Authentication currently require two models
+  # Credentials are like passwords.
+  # Tokens are like cookie sessions. It currently stores against Redis
+  module Models
+    autoload :AccessCredential, 'intermodal/models/access_credential'
+    autoload :AccessToken, 'intermodal/models/access_token'
+  end
+
+
   ActiveSupport.on_load(:before_initialize) do
     Warden::Strategies.add(:x_auth_token) do
       def valid?
