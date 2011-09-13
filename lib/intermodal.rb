@@ -1,3 +1,4 @@
+require 'active_support'
 require 'will_paginate'
 
 module Intermodal

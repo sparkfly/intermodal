@@ -1,4 +1,5 @@
 module SpecHelpers
+
   module Rack
     extend ActiveSupport::Concern
 
@@ -11,7 +12,7 @@ module SpecHelpers
     included do
       subject { response }
 
-      let(:application) { Ignite::Application }
+      let(:application) { raise 'Define let(:application)' }
       let(:http_headers) { Hash.new }
       let(:request_headers) do
         http_headers.to_a.inject({}) do |m,kv|
