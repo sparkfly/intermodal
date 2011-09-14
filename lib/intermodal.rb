@@ -32,8 +32,9 @@ module Intermodal
   # Credentials are like passwords.
   # Tokens are like cookie sessions. It currently stores against Redis
   module Models
+    autoload :Account,          'intermodal/models/account'
     autoload :AccessCredential, 'intermodal/models/access_credential'
-    autoload :AccessToken, 'intermodal/models/access_token'
+    autoload :AccessToken,      'intermodal/models/access_token'
   end
 
 

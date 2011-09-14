@@ -1,7 +1,12 @@
 require 'intermodal'
 require 'rails'
+require 'active_support/secure_random'
 require 'rspec-rails'
+require 'database_cleaner'
+require 'machinist/active_record'
+require 'redis'
 require 'ap' # Debugging
+
 
 # Usage:
 # variable_to_watch.tap(&WATCH)
@@ -19,4 +24,9 @@ RSpec.configure do |config|
   # If you'd prefer not to run each of your examples within a transaction,
   # uncomment the following line.
   #config.use_transactional_examples false
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
 end

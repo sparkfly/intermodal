@@ -2,9 +2,14 @@ require 'spec_helper'
 
 describe Intermodal::Rack::Auth do
   include SpecHelpers::Rack
-  #include SpecHelpers::Application
+  include SpecHelpers::AuthenticationSchema
+  use_authentication_schema
 
   let(:application) { Intermodal::Rack::Auth }
+
+  it 'test', :focus => true do
+    ap [Account.make, AccessCredential.make]
+  end
 
   context 'when successfully authenticating' do
     let(:http_headers) { { 
