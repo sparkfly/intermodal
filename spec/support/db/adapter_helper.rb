@@ -31,6 +31,11 @@ module SpecHelpers
       let(:postgres_admin_env) { CONFIGURATIONS[:postgresql_admin] }
 
       let(:recreate_database) do
+        if database_type.to_s == 'sqlite3'
+          ActiveRecord::Base.establish_connection(database_env)
+          next
+        end
+
         ActiveRecord::Base.establish_connection(CONFIGURATIONS[:postgresql_admin]) if database_type.to_s == 'postgresql'
 
         ActiveRecord::Base.connection.drop_database(database_name)

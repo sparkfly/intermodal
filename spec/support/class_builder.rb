@@ -25,13 +25,13 @@ module SpecHelpers
     def define_model_class(class_name, base = nil, &block)
       base = base || ActiveRecord::Base
       klass = define_class(class_name, base) do
-        extend Machinist::Machinable
+        #extend Machinist::Machinable
         #include Machinist::Blueprints
         #include Machinist::ActiveRecordExtensions
 
-        def self.blueprint_class
-          Machinist::ActiveRecord::Blueprint
-        end
+        #def self.blueprint_class
+        #  Machinist::ActiveRecord::Blueprint
+        #end
       end
 
       klass.class_eval(&block) if block_given?

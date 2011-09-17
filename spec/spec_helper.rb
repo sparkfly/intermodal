@@ -30,3 +30,6 @@ RSpec.configure do |config|
   end
 
 end
+
+# Turn this on for debugging
+ActiveRecord::Migration.verbose = false

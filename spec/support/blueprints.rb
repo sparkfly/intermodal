@@ -10,7 +10,8 @@ module SpecHelpers
 
     included do
       def blueprints
-        sham = { :email => lambda { Forgery::Internet.email_address },
+        sham = { 
+          :email => lambda { Forgery::Internet.email_address },
           :key   => lambda { SecureRandom.hex(32) },
           :company_name => lambda { [ ( rand(3) > 1 ? Faker::Company.name : Forgery::Name.company_name ),
             Forgery::Address.country ].join(' ') } }

@@ -3,13 +3,9 @@ require 'spec_helper'
 describe Intermodal::Rack::Auth do
   include SpecHelpers::Rack
   include SpecHelpers::AuthenticationSchema
-  use_authentication_schema
+  use_authentication_schema 
 
   let(:application) { Intermodal::Rack::Auth }
-
-  it 'test', :focus => true do
-    ap [Account.make, AccessCredential.make]
-  end
 
   context 'when successfully authenticating' do
     let(:http_headers) { { 
@@ -27,8 +23,8 @@ describe Intermodal::Rack::Auth do
     end
   end
 
-  context 'when not successfully authenticating' do
-    let(:http_headers) { { 
+  context 'with invalid authentication credentials' do
+    let(:http_headers)  { { 
       'X-Auth-Identity' => 'no identity',
       'X-Auth-Key' => 'no key' } }
 
@@ -36,5 +32,7 @@ describe Intermodal::Rack::Auth do
       expects_status(401)
     end
   end
+
+  pending 'with invalid access token'
 
 end
