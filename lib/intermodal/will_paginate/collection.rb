@@ -56,7 +56,7 @@ module Intermodal
             _collection.to_a.map do |r| 
               r.presentation(options.except(:root)).
                 to_xml(
-                  :root => r.class.name.underscore,
+                  :root => r.class.name.demodulize.underscore,
                   :builder => opts[:builder],
                   :skip_instruct => true )
             end

@@ -34,7 +34,6 @@ module Intermodal
       end
 
       # Actions
-      OUTPUT = lambda { |o| puts o }
       def index
         respond_with presented_collection, :presentation_root => collection_name
       end
