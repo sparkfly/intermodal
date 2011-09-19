@@ -5,7 +5,7 @@ module Intermodal
       self._mapping_strategy = INCLUDE_NILS
 
       class << self
-        alias exclude_from_presentation exclude_properties 
+        alias exclude_from_presentation exclude_properties
 
         # Convenience alias for maps
         # Examples:
@@ -13,7 +13,7 @@ module Intermodal
         #  presents :name
         #  presents :name, :as => lambda { |o| o.name.camelize }
         #  presents :name, :as => [ :first_name, :last_name, :suffix, :prefix ]
-        #  
+
         alias presents maps
 
         def model_name(resource)

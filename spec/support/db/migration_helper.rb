@@ -15,9 +15,9 @@ module SpecHelpers
     def create_migration(&blk)
       migration = Class.new(ActiveRecord::Migration)
 
-      # This is the equivalent of 
+      # This is the equivalent of
       # class Foo
-      #   def self.up 
+      #   def self.up
       #   end
       # end
 
@@ -38,7 +38,7 @@ module SpecHelpers
       migration = create_migration do
         create_table(table, opts, &blk)
       end
-      migration.up 
+      migration.up
     end
   end
 end

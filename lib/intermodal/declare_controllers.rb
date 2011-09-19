@@ -17,13 +17,13 @@ module Intermodal
       _namespace = _module(parent_name)
       controller_name = _controller_name(name)
 
-      _create_controller(name, controller_name, blk, 
-                         :ancestor => Intermodal::NestedResourceController, 
+      _create_controller(name, controller_name, blk,
+                         :ancestor => Intermodal::NestedResourceController,
                          :namespace => _namespace,
                          :model => options[:model],
                          :parent_resource_name => _parent_resource_name,
                          :parent_model => _parent_model,
-                         :api => self) 
+                         :api => self)
     end
 
     def link_resources_from(parent_name, options = {}, &blk)
@@ -41,13 +41,13 @@ module Intermodal
         let(:target_ids) { params[_target_resource_name] }
       end
 
-      controller = _create_controller(collection_name, controller_name, customize_linking_resource, 
-                                      :ancestor => Intermodal::LinkingResourceController, 
+      controller = _create_controller(collection_name, controller_name, customize_linking_resource,
+                                      :ancestor => Intermodal::LinkingResourceController,
                                       :namespace => _namespace,
                                       :model => _model,
                                       :parent_resource => _parent_resource_name,
                                       :parent_model => _parent_model,
-                                      :api => self) 
+                                      :api => self)
       controller.instance_eval(&blk) if blk
     end
 

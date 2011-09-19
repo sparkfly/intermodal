@@ -67,11 +67,11 @@ module Intermodal
           model_name(resource.class)
         end
 
-        def presents_resource(resource, options = {}) 
+        def presents_resource(resource, options = {})
           presenters[resource_name(resource)].call(resource, options)
         end
 
-        def accepts_resource(resource, options = {}) 
+        def accepts_resource(resource, options = {})
           accepts[resource_name(resource)].call(resource, options)
         end
       end

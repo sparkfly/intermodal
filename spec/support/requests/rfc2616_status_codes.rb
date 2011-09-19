@@ -1,6 +1,6 @@
 module SpecHelpers
   module HTTP
-    RFC2616_HTTP_STATUS_CODES = 
+    RFC2616_HTTP_STATUS_CODES =
       [[100, "Continue"],
         [101, "Switching Protocols"],
         [200, "OK"],

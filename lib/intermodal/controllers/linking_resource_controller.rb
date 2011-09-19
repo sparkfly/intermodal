@@ -6,4 +6,3 @@ module Intermodal
     self.responder = Intermodal::LinkingResourceResponder
   end
 end
-

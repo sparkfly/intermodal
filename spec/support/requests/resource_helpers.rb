@@ -11,9 +11,9 @@ module SpecHelpers
       let(:model) { resource_name.camelize.constantize }
       let(:parent_models) { parent_names.map { |p| p.to_s.singularize.camelize.constantize } }
 
-      let(:model_collection) do 
+      let(:model_collection) do
         3.times { model.make(model_factory_options) }
-        (model_parent ? model.by_parent(model_parent) : model.all ) 
+        (model_parent ? model.by_parent(model_parent) : model.all )
       end
       let(:model_resource) { model.make(model_factory_options) }
       let(:model_factory_options) { (model_parent ? { parent_names.last.to_s.singularize => model_parent } : {} ) }
@@ -120,14 +120,14 @@ module SpecHelpers
 
       STANDARD_REQUEST_FOR = {
         :index => { :method => :get, :end_point => :collection_url },
-        :show => { :method => :get, :end_point => :resource_url }, 
+        :show => { :method => :get, :end_point => :resource_url },
         :create => { :method => :post, :end_point => :collection_url, :payload => lambda { valid_create_attributes } }, 
         :update => { :method => :put, :end_point => :resource_url, :payload => lambda { valid_update_attributes } }, 
         :destroy => { :method => :delete, :end_point => :resource_url } }
 
       def request_resource_action(action, options = {}, &blk)
-        options = { 
-          :mime_type => metadata[:mime_type], 
+        options = {
+          :mime_type => metadata[:mime_type],
           :encoding => metadata[:encoding],
           :status => STANDARD_SUCCESSFUL_STATUS_FOR[action],
           :collection_url => metadata[:collection_url],
@@ -173,7 +173,7 @@ module SpecHelpers
           instance_eval(&additional_examples) if additional_examples
         end
       end
-      
+
       def expects_update(options = {}, &additional_examples)
         request_resource_action(:update, options) do
           it "should update #{metadata[:resource_name]}" do
@@ -188,7 +188,7 @@ module SpecHelpers
         end
       end
 
-      def expects_destroy(options = {}, &additional_examples) 
+      def expects_destroy(options = {}, &additional_examples)
         request_resource_action(:destroy, options) do
           it "should delete #{metadata[:resource_name]}" do
             response.should_not be(nil)
@@ -198,7 +198,7 @@ module SpecHelpers
           instance_eval(&additional_examples) if additional_examples
         end
       end
-      
+
     end
   end
 end

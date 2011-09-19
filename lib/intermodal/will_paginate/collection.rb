@@ -71,4 +71,3 @@ module Intermodal
     end
   end
 end
-

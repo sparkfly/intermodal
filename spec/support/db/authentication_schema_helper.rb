@@ -7,12 +7,12 @@ module SpecHelpers
       include SpecHelpers::Migration
       include SpecHelpers::ClassBuilder
       include SpecHelpers::Blueprints
-      
+
       # Convenience methods
       let(:account) { Account.make! }
       let(:access_credential) { AccessCredential.make!(:account => account) }
       let(:access_token) { AccessToken.generate!(account) }
-      
+
       # Simulates rake db:migrate
       let(:db_migrate) { create_accounts; create_account_credentials }
 
@@ -82,7 +82,7 @@ module SpecHelpers
         # I'm using before(:each) on Postgresql for now, until I fix these
         # other problems. Ideally, I can freely use both, recreating the
         # database only at the top of the example group.
-        
+
         before(:each)  { db_recreate; shims; start_redis; blueprints }
         before(:each) { DatabaseCleaner.start }
         after(:each)  { DatabaseCleaner.clean }

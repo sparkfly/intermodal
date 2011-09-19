@@ -36,6 +36,6 @@ module SpecHelpers
 
       klass.class_eval(&block) if block_given?
       klass
-    end 
+    end
   end
 end
