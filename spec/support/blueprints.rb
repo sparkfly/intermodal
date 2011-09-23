@@ -27,3 +27,8 @@ Item.blueprint do
   account  { Account.make! }
   name     { "Item ##{sn}" }
 end
+
+Part.blueprint do
+  item     { Item.make! }
+  name     { "Part ##{sn}" }
+end

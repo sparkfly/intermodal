@@ -12,6 +12,7 @@ module SpecHelpers
 
       # Example for top-level resource
       let(:item) { Item.make!(:account => account) }
+      let(:part) { Part.make!(:item => item) }
     end
   end
 end

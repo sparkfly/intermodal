@@ -89,7 +89,8 @@ module Intermodal
 
   # Rspec Macros
   module RSpec
-    autoload :Accountability, 'intermodal/rspec/models/accountability'
+    autoload :Accountability,    'intermodal/rspec/models/accountability'
+    autoload :HasParentResource, 'intermodal/rspec/models/has_parent_resource'
   end
 end
 

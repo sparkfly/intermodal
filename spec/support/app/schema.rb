@@ -5,9 +5,10 @@ module SpecHelpers
     include Intermodal::Let
     include AuthenticationSchema
 
-    let(:db_migrate) { auth_db_migrate; create_items }
-    let(:test_models) { [item_model] }
+    let(:db_migrate) { auth_db_migrate; create_items; create_parts }
+    let(:test_models) { [item_model, part_model] }
 
+    # Migrations
     let(:create_items) do
       create_table :items do |t|
         t.string  :name
@@ -15,9 +16,24 @@ module SpecHelpers
       end
     end
 
+    let(:create_parts) do
+      create_table :parts do |t|
+        t.string  :name
+        t.integer :item_id
+      end
+    end
+
+    # Models
     let(:item_model) do
       define_model_class :Item do
         include Intermodal::Models::Accountability
+      end
+    end
+
+    let(:part_model) do
+      define_model_class :Part do
+        include Intermodal::Models::HasParentResource
+        parent_resource :item
       end
     end
 
