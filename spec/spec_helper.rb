@@ -1,5 +1,6 @@
 require 'intermodal'
 require 'rails'
+require 'active_record'
 require 'rspec-rails'
 require 'database_cleaner'
 require 'machinist/active_record'
@@ -27,9 +28,12 @@ RSpec.configure do |config|
   # uncomment the following line.
   #config.use_transactional_examples false
 
-  config.before(:suite) { DatabaseCleaner.strategy = :transaction }
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation # :transaction strategy currently does not work
+    DatabaseCleaner.clean_with :truncation
+  end
+
   config.before(:each)  { DatabaseCleaner.start }
   config.after(:each)   { DatabaseCleaner.clean }
-
 end
 

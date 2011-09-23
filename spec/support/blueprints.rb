@@ -22,3 +22,8 @@ AccessCredential.blueprint do
   identity { SHAM[:email].call() }
   key      { SHAM[:key].call() }
 end
+
+Item.blueprint do
+  account  { Account.make! }
+  name     { "Item ##{sn}" }
+end

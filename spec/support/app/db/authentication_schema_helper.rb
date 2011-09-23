@@ -11,13 +11,9 @@ module SpecHelpers
       include SpecHelpers::Migration
       include SpecHelpers::ClassBuilder
 
-      # Convenience methods
-      let(:account) { Account.make! }
-      let(:access_credential) { AccessCredential.make!(:account => account) }
-      let(:access_token) { AccessToken.generate!(account) }
-
       # Simulates rake db:migrate
-      let(:db_migrate) { create_accounts; create_account_credentials }
+      let(:auth_db_migrate) { create_accounts; create_account_credentials }
+      let(:db_migrate) { auth_db_migrate }
 
       # Simulates rake db:recreate
       let(:db_recreate) { recreate_database; db_migrate }

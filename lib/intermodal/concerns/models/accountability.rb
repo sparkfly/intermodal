@@ -4,6 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       included do
+        # TODO: This might not be necessary
         include Intermodal::Models::Presentation
 
         # Validations
@@ -15,9 +16,6 @@ module Intermodal
         # Scopes
         scope :by_account_id, lambda { |a_id| where(:account_id => a_id) }
         scope :by_account, lambda { |a| by_account_id(a.id) }
-
-        # Presentation
-        #exclude_from_presentation :account_id
 
         extend Get
       end

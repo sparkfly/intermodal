@@ -86,6 +86,11 @@ module Intermodal
 
     ::WillPaginate::Collection.send(:include, Intermodal::WillPaginate::Collection)
   end
+
+  # Rspec Macros
+  module RSpec
+    autoload :Accountability, 'intermodal/rspec/models/accountability'
+  end
 end
 
 require 'intermodal/config'
