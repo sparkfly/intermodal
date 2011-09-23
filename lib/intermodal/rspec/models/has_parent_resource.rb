@@ -1,6 +1,6 @@
 module Intermodal
   module RSpec
-    # All Intermodal nested resource controllers require models that 
+    # All Intermodal nested resource controllers require models that
     # belongs to an parent object that belongs to an account. It should
     # also respond to #get and verify authorization for the account.
     #
