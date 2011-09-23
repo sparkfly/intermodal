@@ -12,7 +12,10 @@ require 'ap' # Debugging
 # variable_to_watch.tap(&WATCH)
 WATCH = lambda { |o| ap o } unless defined?(WATCH)
 
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+# Turn this on for debugging
+ActiveRecord::Migration.verbose = false
+
+Dir["spec/support/**/*.rb"].map { |f| f.gsub(%r{.rb$}, '') }.each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -25,11 +28,9 @@ RSpec.configure do |config|
   # uncomment the following line.
   #config.use_transactional_examples false
 
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-  end
+  config.before(:suite) { DatabaseCleaner.strategy = :transaction }
+  config.before(:each)  { DatabaseCleaner.start }
+  config.after(:each)   { DatabaseCleaner.clean }
 
 end
 
-# Turn this on for debugging
-ActiveRecord::Migration.verbose = false

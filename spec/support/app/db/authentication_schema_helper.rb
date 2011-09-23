@@ -1,3 +1,7 @@
+require 'spec/support/app/db/adapter_helper'
+require 'spec/support/app/db/migration_helper'
+require 'spec/support/app/class_builder'
+
 module SpecHelpers
   module AuthenticationSchema
     extend ActiveSupport::Concern
@@ -6,7 +10,6 @@ module SpecHelpers
       include SpecHelpers::Adapter
       include SpecHelpers::Migration
       include SpecHelpers::ClassBuilder
-      include SpecHelpers::Blueprints
 
       # Convenience methods
       let(:account) { Account.make! }
@@ -36,7 +39,7 @@ module SpecHelpers
         end
       end
 
-      let(:start_redis) { AccessToken.establish_connection! }
+      let(:establish_redis_connection) { AccessToken.establish_connection! }
 
       # Shims
       let(:shims) { [shim_for_account, shim_for_access_credential, shim_for_access_token] }
@@ -57,35 +60,6 @@ module SpecHelpers
         define_class :AccessToken, Object do
           include Intermodal::Models::AccessToken
         end
-      end
-    end
-
-    module ClassMethods
-      def use_authentication_schema(db_type = nil)
-        _db_type = db_type || :postgresql
-        let(:database_type) { _db_type }
-
-
-        # TODO:
-        # Somehow, using let() to recreate a postgresql database using a
-        # before(:all) hook makes let() not work. In this current setup,
-        # the first let(:http_headers) wins out, thus making the spec fail.
-        # It does not matter what you use, all let() declarations gets
-        # memoized.
-        #
-        # Postgresql *will* work if we use before(:each) to recreate the
-        # database. But it is also slow.
-        #
-        # I tried using sqlite3 in-memory instead. I get errors with 
-        # ActiveRecord model unable to find the table.
-        #
-        # I'm using before(:each) on Postgresql for now, until I fix these
-        # other problems. Ideally, I can freely use both, recreating the
-        # database only at the top of the example group.
-
-        before(:each)  { db_recreate; shims; start_redis; blueprints }
-        before(:each) { DatabaseCleaner.start }
-        after(:each)  { DatabaseCleaner.clean }
       end
     end
   end

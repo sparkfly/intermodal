@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Intermodal::Rack::Auth do
   include SpecHelpers::Rack
   include SpecHelpers::AuthenticationSchema
-  use_authentication_schema
 
   let(:application) { Intermodal::Rack::Auth }
 

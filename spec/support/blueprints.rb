@@ -1,31 +1,24 @@
 require 'machinist/active_record'
 require 'forgery'
 require 'faker'
+require 'spec/support/app/schema'
 
+SHAM = {
+  :email => lambda { Forgery::Internet.email_address },
+  :key   => lambda { SecureRandom.hex(32) },
+  :company_name => lambda { [ ( rand(3) > 1 ? Faker::Company.name : Forgery::Name.company_name ),
+    Forgery::Address.country ].join(' ') } }
+
+# Load the schema before setting up the blueprints
+SpecHelpers::Schema.new(:postgresql).up!
 
 # Blueprints
-module SpecHelpers
-  module Blueprints
-    extend ActiveSupport::Concern
+Account.blueprint do
+  name { SHAM[:company_name].call() }
+end
 
-    included do
-      def blueprints
-        sham = {
-          :email => lambda { Forgery::Internet.email_address },
-          :key   => lambda { SecureRandom.hex(32) },
-          :company_name => lambda { [ ( rand(3) > 1 ? Faker::Company.name : Forgery::Name.company_name ),
-            Forgery::Address.country ].join(' ') } }
-
-        Account.blueprint do
-          name { sham[:company_name].call() }
-        end
-
-        AccessCredential.blueprint do
-          account  { Account.make! }
-          identity { sham[:email].call() }
-          key      { sham[:key].call() }
-        end
-      end
-    end
-  end
+AccessCredential.blueprint do
+  account  { Account.make! }
+  identity { SHAM[:email].call() }
+  key      { SHAM[:key].call() }
 end
