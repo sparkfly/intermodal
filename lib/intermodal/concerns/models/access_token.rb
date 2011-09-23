@@ -28,7 +28,7 @@ module Intermodal
         def self.generate!(account)
           token = new(:account_id => account.id)
           begin
-            token.token = ActiveSupport::SecureRandom.hex(TOKEN_SIZE)
+            token.token = SecureRandom.hex(TOKEN_SIZE)
           end until token.valid?
           return token if token.save
         end

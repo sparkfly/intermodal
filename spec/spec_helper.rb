@@ -1,6 +1,5 @@
 require 'intermodal'
 require 'rails'
-require 'active_support/secure_random'
 require 'rspec-rails'
 require 'database_cleaner'
 require 'machinist/active_record'
