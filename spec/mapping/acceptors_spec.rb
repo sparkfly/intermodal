@@ -107,6 +107,10 @@ describe Intermodal::Mapping::Acceptor do
       it 'should accept an arbitrary mapping' do
         should include(:phone_number)
       end
+
+      it 'should transform the value' do
+        subject[:phone_number].should_not eql(value)
+      end
     end
 
     pending 'with scoped acceptor'
