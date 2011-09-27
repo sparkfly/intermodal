@@ -57,6 +57,8 @@ describe Intermodal::Mapping::Acceptor do
         subject[:optional_field].should eql(value)
       end
     end
+
+    pending 'with scoped acceptor'
   end
 end
 
