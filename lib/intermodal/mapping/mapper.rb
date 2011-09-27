@@ -7,8 +7,14 @@ module Intermodal
       EXCLUDE_NILS = lambda { |h, resource, mapped_from, mapped_to| a = map_attribute(resource, mapped_to); h[mapped_from] = a if a }
 
       class << self
+        # :public: Blacklists properties
         def exclude_properties(*args)
           (self._exclude_properties ||= []).push *(args.map(&:to_s))
+        end
+
+        # :api: Mapper should respond to .call()
+        def call(resource, options = {})
+          map_attributes(resource, options[:scope] || :default)
         end
 
         def property_mapping(scope = :default)
@@ -45,9 +51,6 @@ module Intermodal
           end
         end
 
-        def call(resource, options = {})
-          map_attributes(resource, options[:scope] || :default)
-        end
       end
     end
 
