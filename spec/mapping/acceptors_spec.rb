@@ -82,6 +82,13 @@ describe Intermodal::Mapping::Acceptor do
         subject[:name][:first_name].should eql(first_name)
         subject[:name][:last_name].should  eql(last_name)
       end
+
+      # Unless you've explicitly declared the merged fields, it should
+      # not include it.
+      it 'should not accept merged fields' do
+        should_not include(:first_name)
+        should_not include(:last_name)
+      end
     end
 
     pending 'with scoped acceptor'
