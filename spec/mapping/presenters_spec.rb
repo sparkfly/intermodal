@@ -30,6 +30,26 @@ describe Intermodal::Mapping::Presenter do
       end
     end
 
+    context 'with pass-through alias mappings' do
+      let(:presenter) do
+        define_class :TestPresenter, Intermodal::Mapping::Presenter do
+          presents :full_name, :as => :name
+        end
+      end
+
+      it 'should present explicitly whitelisted fields' do
+        should include(:full_name)
+      end
+
+      it 'should pass through value without transformation' do
+        subject[:full_name].should eql(resource.name)
+      end
+
+      it 'should not present undeclared fields' do
+        should_not include(:name)
+      end
+    end
+
     context 'with nested mappings' do
       let(:presenter) do
         define_class :TestPresenter, Intermodal::Mapping::Presenter do
