@@ -18,5 +18,9 @@ describe Intermodal::Mapping::Acceptor do
     should include(:acceptable_field)
   end
 
+  it 'should pass through value without transformation' do
+    subject[:acceptable_field].should eql(value)
+  end
+
 end
 
