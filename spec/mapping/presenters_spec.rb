@@ -100,6 +100,24 @@ describe Intermodal::Mapping::Presenter do
         subject[:name].should_not eql(resource.name)
       end
     end
+
+    context 'when scoping' do
+      subject { presenter.call(resource, :scope => scope) }
+
+      context 'without scope declaration' do
+        let(:scope) { :default }
+        let(:presenter) do
+          define_class :TestPresenter, Intermodal::Mapping::Presenter do
+            presents :name
+          end
+        end
+
+        it 'should default to :default scope' do
+          should include(:name)
+          subject[:name].should eql(resource.name)
+        end
+      end
+    end
   end
 end
 
