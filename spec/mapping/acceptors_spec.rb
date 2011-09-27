@@ -77,6 +77,11 @@ describe Intermodal::Mapping::Acceptor do
         subject[:name].should include(:first_name)
         subject[:name].should include(:last_name)
       end
+
+      it 'should merge fields without transforming its value' do
+        subject[:name][:first_name].should eql(first_name)
+        subject[:name][:last_name].should  eql(last_name)
+      end
     end
 
     pending 'with scoped acceptor'
