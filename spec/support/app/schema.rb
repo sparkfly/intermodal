@@ -5,8 +5,15 @@ module SpecHelpers
     include Intermodal::Let
     include AuthenticationSchema
 
-    let(:db_migrate) { auth_db_migrate; create_items; create_parts }
-    let(:test_models) { [item_model, part_model] }
+    let(:db_migrate) do
+      auth_db_migrate
+      create_items
+      create_parts
+      create_vendors
+      create_skus
+    end
+
+    let(:test_models) { [item_model, part_model, vendor_model, sku_model] }
 
     # Migrations
     let(:create_items) do
@@ -23,10 +30,28 @@ module SpecHelpers
       end
     end
 
+    let(:create_vendors) do
+      create_table :vendors do |t|
+        t.string  :name
+        t.integer :account_id
+      end
+    end
+
+    let(:create_skus) do
+      create_table :skus do |t|
+        t.string :identifier
+        t.integer :item_id
+        t.integer :vendor_id
+      end
+    end
+
     # Models
     let(:item_model) do
       define_model_class :Item do
         include Intermodal::Models::Accountability
+
+        has_many :skus
+        has_many :vendors, :through => :skus
       end
     end
 
@@ -36,6 +61,23 @@ module SpecHelpers
         parent_resource :item
       end
     end
+
+    let(:vendor_model) do
+      define_model_class :Vendor do
+        include Intermodal::Models::Accountability
+
+        has_many :skus
+        has_many :items, :through => :skus
+      end
+    end
+
+    let(:sku_model) do
+      define_model_class :Sku do
+        include Intermodal::Models::ResourceLinking
+        links_resource :item, :to => :vendor
+      end
+    end
+
 
     def initialize(_database_type)
       _database_type = _database_type

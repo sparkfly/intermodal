@@ -26,7 +26,7 @@ module Intermodal
     #
     # It works with Remarkable. It might work with Shoulda
     #
-    # If you don't want to use either, you can try
+    # If you don't want to use either, you can pass:
     #
     # describe NestedResource do
     #   include Intermodal::RSpec::HasParentResource
@@ -52,21 +52,24 @@ module Intermodal
         # it is a scope
         def should_respond_to_scope(scope_method)
           it "should have scope #{scope_method}" do
-            subject.class.should respond_to(scope_method) 
+            subject.class.should respond_to(scope_method)
           end
         end
 
-        def concerned_with_parent_resource(parent_resource_name, extra_get_examples = nil,  &blk)
+        def concerned_with_parent_resource(parent_resource_name, options = {}, &blk)
+          extra_get_examples = options[:extra_get_examples]
+
           context "when concerned with parent resource #{parent_resource_name}" do
             let(:parent_id_name) { "#{parent_resource_name}_id" }
             let(:parent_model) { parent_resource_name.to_s.camelize.constantize }
-            let(:different_parent) { parent_model.make }
-            let(:parent_with_different_account) { parent_model.make(:account => different_account) }
+            let(:different_parent) { parent_model.make! }
+            let(:parent_with_different_account) { parent_model.make!(:account => different_account) }
 
             instance_eval(&blk) if blk
 
-            it { should belong_to parent_resource_name }
-            it { should validate_presence_of parent_resource_name }
+            it { should belong_to parent_resource_name } unless options[:skip_association_examples]
+            it { should validate_presence_of parent_resource_name } unless options[:skip_validation_examples]
+
             [ :by_parent_id, :by_parent, "by_#{parent_resource_name}_id", "by_#{parent_resource_name}" ].each do |scope|
               should_respond_to_scope(scope)
             end

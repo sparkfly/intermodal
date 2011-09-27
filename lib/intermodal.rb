@@ -91,6 +91,7 @@ module Intermodal
   module RSpec
     autoload :Accountability,    'intermodal/rspec/models/accountability'
     autoload :HasParentResource, 'intermodal/rspec/models/has_parent_resource'
+    autoload :ResourceLinking  , 'intermodal/rspec/models/resource_linking'
   end
 end
 

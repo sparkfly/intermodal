@@ -32,3 +32,9 @@ Part.blueprint do
   item     { Item.make! }
   name     { "Part ##{sn}" }
 end
+
+Vendor.blueprint do
+  account  { Account.make! }
+  name     { SHAM[:company_name].call() }
+end
+
