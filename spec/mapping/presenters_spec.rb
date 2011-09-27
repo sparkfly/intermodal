@@ -33,7 +33,7 @@ describe Intermodal::Mapping::Presenter do
     context 'with pass-through alias mappings' do
       let(:presenter) do
         define_class :TestPresenter, Intermodal::Mapping::Presenter do
-          presents :full_name, :as => :name
+          presents :full_name, :with => :name
         end
       end
 
@@ -55,7 +55,7 @@ describe Intermodal::Mapping::Presenter do
         define_class :TestPresenter, Intermodal::Mapping::Presenter do
 
           # Use this to create nested presentation
-          presents :metadata, :as => [ :name, :description ]
+          presents :metadata, :with => [ :name, :description ]
         end
       end
 
@@ -88,7 +88,7 @@ describe Intermodal::Mapping::Presenter do
           # This lets you use aribrary functions to map out accepted fields.
           # Beware! For many use-cases, declaring these in the model works better.
           # Beware! Do not use functions with side-effects
-          presents :name, :as => lambda { |o| o[:name].upcase }
+          presents :name, :with => lambda { |o| o[:name].upcase }
         end
       end
 

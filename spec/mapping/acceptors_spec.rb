@@ -63,7 +63,7 @@ describe Intermodal::Mapping::Acceptor do
     context 'with pass-through alias mappings' do
       let(:acceptor) do
         define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
-          accepts :name, :as => :full_name
+          accepts :name, :with => :full_name
         end
       end
 
@@ -87,7 +87,7 @@ describe Intermodal::Mapping::Acceptor do
       let(:acceptor) do
         define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
           # Use this to create nested parameters from flattened parameters
-          accepts :name, :as => [ :first_name, :last_name ]
+          accepts :name, :with => [ :first_name, :last_name ]
         end
       end
 
@@ -120,7 +120,7 @@ describe Intermodal::Mapping::Acceptor do
           # This lets you use aribrary functions to map out accepted fields.
           # Beware! For many use-cases, declaring these in the model works better.
           # Beware! Do not use functions with side-effects
-          accepts :phone_number, :as => lambda { |o| o[:phone_number].gsub(/[^0-9]/, '') }
+          accepts :phone_number, :with => lambda { |o| o[:phone_number].gsub(/[^0-9]/, '') }
         end
       end
 

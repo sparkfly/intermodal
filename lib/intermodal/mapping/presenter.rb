@@ -11,8 +11,8 @@ module Intermodal
         # Examples:
         #
         #  presents :name
-        #  presents :name, :as => lambda { |o| o.name.camelize }
-        #  presents :name, :as => [ :first_name, :last_name, :suffix, :prefix ]
+        #  presents :name, :with => lambda { |o| o.name.camelize }
+        #  presents :name, :with => [ :first_name, :last_name, :suffix, :prefix ]
 
         alias presents maps
 

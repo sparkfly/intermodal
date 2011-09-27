@@ -25,15 +25,17 @@ module Intermodal
         # Examples:
         #
         #  maps :name
-        #  maps :name, :as => lambda { |o| o.name.camelize }
-        #  maps :name, :as => [ :first_name, :last_name, :suffix, :prefix ]
+        #  maps :name, :with => lambda { |o| o.name.camelize }
+        #  maps :name, :with => [ :first_name, :last_name, :suffix, :prefix ]
         #  maps :name, :scope => :named
         #
         def maps(property, opts = {})
           scopes = opts[:scope] || [ :default ]
           scopes = (scopes.is_a?(Array) ? scopes : [ scopes ]) 
           scopes.each do |scope|
-            property_mapping(scope).push [property, (opts[:as] ? opts[:as] : property)]
+            # DEPRECATION: option :as
+            remapped_property = opts[:with] || opts[:as] || property
+            property_mapping(scope).push [property, remapped_property]
           end
         end
 
