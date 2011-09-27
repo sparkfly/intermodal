@@ -38,7 +38,8 @@ module Intermodal
 
       customize_linking_resource = proc do
         let(:model) { _model }
-        let(:target_ids) { params[_target_resource_name] }
+        let(:parent_resource_name) { _parent_resource_name }
+        let(:target_resource_name) { _target_resource_name }
       end
 
       controller = _create_controller(collection_name, controller_name, customize_linking_resource,
