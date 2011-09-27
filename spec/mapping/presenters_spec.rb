@@ -117,6 +117,25 @@ describe Intermodal::Mapping::Presenter do
           subject[:name].should eql(resource.name)
         end
       end
+
+      context 'with mixed scopes' do
+        let(:scope) { :default }
+        let(:presenter) do
+          define_class :TestPresenter, Intermodal::Mapping::Presenter do
+            presents :name
+            presents :description, :scope => :details
+          end
+        end
+
+        it 'should default to :default scope' do
+          should include(:name)
+          subject[:name].should eql(resource.name)
+        end
+
+        it 'should not present attributes outside of scope' do
+          should_not include(:description)
+        end
+      end
     end
   end
 end
