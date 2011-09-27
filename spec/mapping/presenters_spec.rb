@@ -61,6 +61,25 @@ describe Intermodal::Mapping::Presenter do
         should_not include(:description)
       end
     end
+
+    context 'with arbitrary mappings' do
+      let(:presenter) do
+        define_class :TestPresenter, Intermodal::Mapping::Presenter do
+          # This lets you use aribrary functions to map out accepted fields.
+          # Beware! For many use-cases, declaring these in the model works better.
+          # Beware! Do not use functions with side-effects
+          presents :name, :as => lambda { |o| o[:name].upcase }
+        end
+      end
+
+      it 'should accept an arbitrary mapping' do
+        should include(:name)
+      end
+
+      it 'should transform the value' do
+        subject[:name].should_not eql(resource.name)
+      end
+    end
   end
 end
 
