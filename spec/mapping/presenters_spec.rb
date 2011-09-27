@@ -136,6 +136,31 @@ describe Intermodal::Mapping::Presenter do
           should_not include(:description)
         end
       end
+
+      context 'with overlapping scopes' do
+        let(:scope) { :default }
+        let(:presenter) do
+          define_class :TestPresenter, Intermodal::Mapping::Presenter do
+            presents :name
+            presents :name, :with => lambda { 'boo!' }, :scope => :details
+          end
+        end
+
+        it 'should default to :default scope' do
+          should include(:name)
+          subject[:name].should eql(resource.name)
+        end
+
+        context 'when called with non-default scope' do
+          let(:scope) { :details }
+
+          it 'should present attributes from non-default scope' do
+            should include(:name)
+            subject[:name].should_not eql(resource.name)
+            subject[:name].should eql('boo!')
+          end
+        end
+      end
     end
   end
 end
