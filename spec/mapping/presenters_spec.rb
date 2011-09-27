@@ -127,6 +127,10 @@ describe Intermodal::Mapping::Presenter do
           end
         end
 
+        let(:resource) { Item.make(:name => name, :description => description) }
+        let(:name) { 'Weird Eureka Thing' }
+        let(:description) { 'Makes Eureka Go Boom!' }
+
         it 'should default to :default scope' do
           should include(:name)
           subject[:name].should eql(resource.name)
@@ -134,6 +138,20 @@ describe Intermodal::Mapping::Presenter do
 
         it 'should not present attributes outside of scope' do
           should_not include(:description)
+        end
+
+        context 'when called with non-default scope' do
+          let(:scope) { :details }
+
+          it 'should include non-overlapping attributes from default scope' do
+            should include(:name)
+            subject[:name].should eql(resource.name)
+          end
+
+          it 'should present attributes from non-default scope' do
+            should include(:description)
+            subject[:description].should eql(resource.description)
+          end
         end
       end
 
