@@ -91,6 +91,24 @@ describe Intermodal::Mapping::Acceptor do
       end
     end
 
+    context 'with arbitrary mappings' do
+      let(:acceptor) do
+        define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
+          # This lets you use aribrary functions to map out accepted fields.
+          # Beware! For many use-cases, declaring these in the model works better.
+          # Beware! Do not use functions with side-effects
+          accepts :phone_number, :as => lambda { |o| o[:phone_number].gsub(/[^0-9]/, '') }
+        end
+      end
+
+      let(:value) { '555-555-5555' }
+      let(:params) { { :phone_number => value } }
+
+      it 'should accept an arbitrary mapping' do
+        should include(:phone_number)
+      end
+    end
+
     pending 'with scoped acceptor'
   end
 end
