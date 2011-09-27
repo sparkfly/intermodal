@@ -8,6 +8,7 @@ describe Intermodal::Mapping::Acceptor do
   let(:acceptor) do
     define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
       accepts :acceptable_field
+      accepts :optional_field
     end
   end
 
@@ -25,6 +26,25 @@ describe Intermodal::Mapping::Acceptor do
   it 'should not accept undeclared fields' do
     should_not include(:unacceptable_field)
   end
+
+  context 'without optional field in params' do
+    # Since we pass the output of an acceptor directly into
+    # the active record #create or #update_attributes, we want
+    # the hash to look like:
+    #
+    # { :acceptable_fields => 'Something' }
+    #
+    # rather than
+    #
+    # { :acceptable_field => 'Something', :optional_field => nil }
+    #
+    # Doing so will update the resource and null out the fields that
+    # have not been passed through params.
+    it 'should not include the optional field' do
+      should_not include(:optional_field)
+    end
+  end
+
 
 end
 
