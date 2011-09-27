@@ -22,5 +22,9 @@ describe Intermodal::Mapping::Acceptor do
     subject[:acceptable_field].should eql(value)
   end
 
+  it 'should not accept undeclared fields' do
+    should_not include(:unacceptable_field)
+  end
+
 end
 
