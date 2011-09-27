@@ -19,6 +19,7 @@ module SpecHelpers
     let(:create_items) do
       create_table :items do |t|
         t.string  :name
+        t.text    :description
         t.integer :account_id
       end
     end
