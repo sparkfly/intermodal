@@ -60,6 +60,25 @@ describe Intermodal::Mapping::Acceptor do
       end
     end
 
+    context 'with nested mappings' do
+      let(:acceptor) do
+        define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
+          # Use this to create nested parameters from flattened parameters
+          accepts :name, :as => [ :first_name, :last_name ]
+        end
+      end
+
+      let(:first_name) { 'Henry' }
+      let(:last_name) { 'Deacon' }
+      let(:params) { { :first_name => first_name, :last_name => last_name } }
+
+      it 'should merge fields into a single hash of fields' do
+        should include(:name)
+        subject[:name].should include(:first_name)
+        subject[:name].should include(:last_name)
+      end
+    end
+
     pending 'with scoped acceptor'
   end
 end
