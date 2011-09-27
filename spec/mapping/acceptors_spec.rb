@@ -45,6 +45,17 @@ describe Intermodal::Mapping::Acceptor do
     end
   end
 
+  context 'with optional field in params' do
+    let(:params) { { :acceptable_field => value, :optional_field => value } }
+
+    it 'should include the optional field' do
+      should include(:optional_field)
+    end
+
+    it 'should pass through value without transformation' do
+      subject[:optional_field].should eql(value)
+    end
+  end
 
 end
 
