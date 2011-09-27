@@ -60,6 +60,29 @@ describe Intermodal::Mapping::Acceptor do
       end
     end
 
+    context 'with pass-through alias mappings' do
+      let(:acceptor) do
+        define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
+          accepts :name, :as => :full_name
+        end
+      end
+
+      let(:value) { 'Henry Deacon' }
+      let(:params) { { :full_name => value } }
+
+      it 'should present explicitly whitelisted fields' do
+        should include(:name)
+      end
+
+      it 'should pass through value without transformation' do
+        subject[:name].should eql(params[:full_name])
+      end
+
+      it 'should not present undeclared fields' do
+        should_not include(:full_name)
+      end
+    end
+
     context 'with nested mappings' do
       let(:acceptor) do
         define_class :TestAcceptor, Intermodal::Mapping::Acceptor do
