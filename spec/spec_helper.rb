@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift '.'
+
 require 'intermodal'
 require 'rails'
 require 'active_record'
