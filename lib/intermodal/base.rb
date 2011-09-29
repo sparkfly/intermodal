@@ -2,7 +2,7 @@ module Intermodal
   class Base
     include Intermodal::Mapping::DSL
     extend Intermodal::DeclareControllers
-    class_inheritable_accessor :routes, :max_per_page, :default_per_page
+    class_attribute :routes, :max_per_page, :default_per_page
 
     # Configure
     self.max_per_page = Intermodal.max_per_page

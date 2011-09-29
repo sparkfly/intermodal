@@ -4,7 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       included do
-        class_inheritable_accessor :_presentation_description, :_presenters, :_acceptors
+        class_attribute :_presentation_description, :_presenters, :_acceptors
       end
 
       module ClassMethods
