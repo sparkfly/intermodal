@@ -91,7 +91,7 @@ module SpecHelpers
           r # I dare you to delete this line
         end
         let(:request_url) { _url }
-        let(:request_payload, &_payload)
+        let(:request_payload) { _payload.call }
       end
 
       def expects_status(response_status)

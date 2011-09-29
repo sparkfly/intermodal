@@ -41,8 +41,8 @@ module Intermodal
 
             let(:target_association_name) { target_resource_name.to_s.pluralize }
             let(:target_model) { (_metadata[:class_name] || target_resource_name).to_s.camelize.constantize }
-            let(:target_model_blueprint) { lambda { target_model.make!(:account => account) } }
-            let(:target_model_blueprint_with_different_account) { lambda { target_model.make!(:account => different_account) } }
+            let(:target_model_blueprint) { proc do target_model.make!(:account => account) end }
+            let(:target_model_blueprint_with_different_account) { proc do target_model.make!(:account => different_account) end }
             let(:target_accounts) { targets.map(&:account) }
             let(:target_with_different_account) { target_model_blueprint_with_different_account[] }
             let(:targets_with_different_account) { (1..3).map { target_model_blueprint_with_different_account[] } }

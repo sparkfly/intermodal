@@ -160,7 +160,7 @@ describe Intermodal::Mapping::Presenter do
         let(:presenter) do
           define_class :TestPresenter, Intermodal::Mapping::Presenter do
             presents :name
-            presents :name, :with => lambda { 'boo!' }, :scope => :details
+            presents :name, :with => lambda { |o| 'boo!' }, :scope => :details
           end
         end
 
