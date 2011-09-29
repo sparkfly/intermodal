@@ -4,7 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       included do
-        class_inheritable_accessor :api
+        class_attribute :api
 
         include Intermodal::Controllers::Accountability
         include Intermodal::Controllers::Anonymous

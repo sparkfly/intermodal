@@ -3,7 +3,7 @@ module Intermodal
     include Intermodal::Controllers::Resource
 
     private
-    class_inheritable_accessor :parent_resource_name, :parent_model
+    class_attribute :parent_resource_name, :parent_model
 
     let(:parent_model) { self.class.parent_model || self.class.parent_resource_name.to_s.classify.constantize }
     let(:collection) { model.get(:all, :account => account, :parent_id => parent_id) }

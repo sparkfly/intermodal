@@ -9,7 +9,7 @@ module Intermodal
 
         respond_to :json, :xml
 
-        class_inheritable_accessor :model, :collection_name, :api
+        class_attribute :model, :collection_name, :api
 
         let(:collection) { raise 'You must define collection' }
         let(:resource) { raise 'You must define resource' }
