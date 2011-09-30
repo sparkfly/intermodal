@@ -12,7 +12,8 @@ module Intermodal
       included do
         subject { response }
 
-        let(:application) { raise 'Define let(:application)' }
+        # Define the Rack Application you are testing
+        let(:application) { fail NotImplemented, 'Must define let(:application)' }
         let(:http_headers) { Hash.new }
         let(:request_headers) do
           http_headers.to_a.inject({}) do |m,kv|
@@ -55,6 +56,18 @@ module Intermodal
           end
         end
 
+        # Override to change payload Content-Type
+        let(:request_payload_mime_type) { Mime::Type.lookup_by_extension(format).to_s }
+
+        # Override to change JSON payload builder
+        let(:request_json_payload) { request_payload.to_json }
+
+        # Override to change XML payload builder
+        let(:request_xml_payload) { request_payload.to_xml }
+
+        # Override to send arbitrary payloads
+        let(:request_raw_payload) { send("request_#{format}_payload") unless request_payload.nil? }
+
         let(:expected_mime_type) { Mime::Types.lookup_by_extension(format).to_s }
         let(:expected_encoding) { 'utf-8' }
       end
@@ -67,16 +80,16 @@ module Intermodal
           end
         end
 
-        def rack_request(method, _url, format = :json, &_payload) 
-          raise "Unimplemented format #{format}" unless format == :json
-          _payload_mime_type = Mime::Type.lookup_by_extension(format).to_s
+        def rack_request(method, _url, _format = nil, &_payload) 
+          _format = _format # Scope for closure
           _payload = lambda { nil } unless _payload
 
+          let(:format) { _format } if _format
           let(:request) do
             req_opts = { :method => method }.merge(request_headers)
-            req_opts[:input] = request_payload.send("to_#{format}") unless request_payload.nil?
+            req_opts[:input] = request_raw_payload
             r = ::Rack::MockRequest.env_for(request_url_prefix + request_url, req_opts)
-            r.merge!({ 'CONTENT_TYPE' => _payload_mime_type }) unless request_payload.nil?
+            r.merge!({ 'CONTENT_TYPE' => request_payload_mime_type }) unless request_payload.nil?
             r # I dare you to delete this line
           end
           let(:request_url) { _url }
