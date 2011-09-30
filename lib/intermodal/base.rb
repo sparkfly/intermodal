@@ -1,5 +1,5 @@
 module Intermodal
-  class Base
+  class Base < Rails::Engine
     include Intermodal::Mapping::DSL
     extend Intermodal::DeclareControllers
     class_attribute :routes, :max_per_page, :default_per_page

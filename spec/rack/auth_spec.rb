@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Intermodal::Rack::Auth do
-  include SpecHelpers::Rack
+  include Intermodal::RSpec::Rack
   include SpecHelpers::Application
 
   let(:application) { Intermodal::Rack::Auth }
