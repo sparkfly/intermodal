@@ -4,7 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       class SimpleXMLParser
-        def self.parse(*args)
+        def self.decode(*args)
           Hash.from_xml(*args)
         end
       end
@@ -41,18 +41,9 @@ module Intermodal
             end
           end.join
         end
-        let(:body) { parser.parse(raw_body) }
+        let(:body) { parser.decode(raw_body) }
 
-        let(:json_parser) do
-          if defined?(Yajl::Parser)
-            Yajl::Parser
-          elsif defined?(JSON)
-            JSON
-          else
-            raise "You must require yajl or json gem"
-          end
-        end
-
+        let(:json_parser) { MultiJson }
         let(:xml_parser) { SimpleXMLParser }
 
         let(:parser) do
