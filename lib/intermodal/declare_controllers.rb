@@ -64,7 +64,6 @@ module Intermodal
       _unload_controller_if_exists(controller_name, _namespace)
       controller = Class.new(_ancestor)
       _namespace.const_set(controller_name, controller)
-      Rails.logger.warn "Creating new resource controller: #{_namespace}::#{controller}"
 
       controller.collection_name = collection_name
       controller.model = options[:model] if options[:model]
@@ -73,7 +72,6 @@ module Intermodal
       controller.class_eval(&customizations) if customizations
       controller.api = options[:api] if options[:api]
 
-      Rails.logger.info "New class: #{controller.inspect}: #{controller.controller_name}"
       controller
     end
 
@@ -96,11 +94,7 @@ module Intermodal
     end
 
     def _unload_controller_if_exists(controller_name, _namespace = Object)
-      begin
-        _namespace.send(:remove_const, controller_name) if _namespace.const_defined?(controller_name) # Unload existing class
-      rescue Exception => err
-        Rails.logger.warn "Unable to unload #{controller_name}: #{err.inspect}"
-      end
+      _namespace.send(:remove_const, controller_name) if _namespace.const_defined?(controller_name) # Unload existing class
     end
   end
 end

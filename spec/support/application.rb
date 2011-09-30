@@ -5,6 +5,8 @@ module SpecHelpers
     extend ActiveSupport::Concern
 
     included do
+      include SpecHelpers::ClassBuilder
+
       # Authentication. These need to be defined globally
       let(:account) { Account.make! }
       let(:different_account) { Account.make! }

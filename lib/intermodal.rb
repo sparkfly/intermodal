@@ -100,6 +100,8 @@ module Intermodal
 
     # Requests
     autoload :Rack,              'intermodal/rspec/requests/rack'
+    autoload :HTTP,              'intermodal/rspec/requests/rfc2616_status_codes'
+    autoload :Resources,         'intermodal/rspec/requests/resources'
   end
 end
 

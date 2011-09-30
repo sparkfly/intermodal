@@ -82,7 +82,7 @@ module Intermodal
 
         def rack_request(method, _url, _format = nil, &_payload) 
           _format = _format # Scope for closure
-          _payload = lambda { nil } unless _payload
+          _payload = proc do nil end unless _payload
 
           let(:format) { _format } if _format
           let(:request) do
@@ -93,11 +93,11 @@ module Intermodal
             r # I dare you to delete this line
           end
           let(:request_url) { _url }
-          let(:request_payload) { _payload.call }
+          let(:request_payload, &_payload)
         end
 
         def expects_status(response_status)
-          it "should respond with status #{response_status} #{SpecHelpers::HTTP::STATUS_CODES[response_status.to_s]}" do
+          it "should respond with status #{response_status} #{Intermodal::RSpec::HTTP::STATUS_CODES[response_status.to_s]}" do
             status.should eql(response_status)
           end
         end
