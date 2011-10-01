@@ -102,6 +102,8 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.29)
+    warden (1.0.5)
+      rack (>= 1.0)
     will_paginate (3.0.2)
     yajl-ruby (1.0.0)
 
@@ -122,5 +124,6 @@ DEPENDENCIES
   rspec-core (= 2.6.4)
   rspec-rails
   sqlite3
+  warden
   will_paginate (>= 3.0.0)
   yajl-ruby

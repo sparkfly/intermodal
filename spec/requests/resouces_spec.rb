@@ -1,12 +1,57 @@
 require 'spec_helper'
+require 'tsort'
 
 describe Intermodal::ResourceController do
   include Intermodal::RSpec::Resources
   include SpecHelpers::Application
 
-  let(:application) { api.tap { |a| a.load_controllers! } }
+  let(:application) do
+    api.tap do |a|
+
+      a.instance.initializers.reject! { |initializer| skipped_initializers.include? initializer.name }
+
+      a.instance.initialize!
+      a.load_controllers!
+      a.routes.draw do
+        resources :items
+      end
+    end
+  end
+  let(:skipped_initializers) { [:add_routing_paths, :append_assets_path, :prepend_helpers_path] }
   let(:api) do
-    define_class :API, Intermodal::Base do
+    define_class :Api, Intermodal::Base do
+
+      def initializers
+        @initializers ||= self.class.initializers_for(self)
+      end
+
+      def initialize!
+        raise "Application has been already initialized." if @initialized
+        run_initializers(self)
+        @initialized = true
+        self
+      end
+
+      def config
+        @config ||= Rails::Engine::Configuration.new(File.dirname(__FILE__))
+      end
+
+      # TODO:
+      # For some reason, Rails::Railstie::Configurable does not
+      # pick up routes within the engine. I don't know if this
+      # has to do with the way I loaded the API in specs, or
+      # if there is a bug in Rails. I'm leaving this here for
+      # now.
+      def self.routes
+        instance.routes
+      end
+
+      def routes
+        @routes ||= ActionDispatch::Routing::RouteSet.new
+        @routes.append(&Proc.new) if block_given?
+        @routes
+      end
+
       map_data do
         presentation_for :item do
           presents :id
@@ -21,10 +66,6 @@ describe Intermodal::ResourceController do
       end
 
       controllers do
-        resources :items
-      end
-
-      routes do
         resources :items
       end
     end

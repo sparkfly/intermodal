@@ -5,6 +5,7 @@ module Intermodal
   # Core
   autoload :Base,               'intermodal/base'
   autoload :DeclareControllers, 'intermodal/declare_controllers'
+  autoload :Configuration,      'intermodal/configuration'
 
   module Mapping
     autoload :Mapper,    'intermodal/mapping/mapper'
@@ -35,20 +36,6 @@ module Intermodal
     autoload :Account,          'intermodal/concerns/models/account'
     autoload :AccessCredential, 'intermodal/concerns/models/access_credential'
     autoload :AccessToken,      'intermodal/concerns/models/access_token'
-  end
-
-
-  ActiveSupport.on_load(:before_initialize) do
-    Warden::Strategies.add(:x_auth_token) do
-      def valid?
-        env['HTTP_X_AUTH_TOKEN']
-      end
-
-      def authenticate!
-        a = AccessToken.authenticate!(env['HTTP_X_AUTH_TOKEN'])
-        a.nil? ? fail!("Could not log in") : success!(a)
-      end
-    end
   end
 
   # Concerns

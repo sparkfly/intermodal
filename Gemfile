@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'rails', '3.1.0'
 gem 'will_paginate', '>= 3.0.0'
+gem 'warden'
 
 group :test do
   gem 'awesome_print'
