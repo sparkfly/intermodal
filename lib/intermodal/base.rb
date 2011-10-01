@@ -37,7 +37,8 @@ module Intermodal
         #middleware.use ::ActionDispatch::Callbacks, !config.cache_classes
 
         # TODO: Find a way to patch Warden so this is not necessary
-        #middleware.use config.session_store, config.session_options
+        # middleware.use config.session_store, config.session_options
+        # Use random secret for now until we can get rid of this.
         middleware.use ::ActionDispatch::Session::AbstractStore
         middleware.use ::ActionDispatch::Flash
         middleware.use Warden::Manager do |manager|
