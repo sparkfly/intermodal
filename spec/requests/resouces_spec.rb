@@ -5,19 +5,7 @@ describe Intermodal::ResourceController do
   include Intermodal::RSpec::Resources
   include SpecHelpers::Application
 
-  let(:application) do
-    api.tap do |a|
-      stub_warden_serializer
-      stub_abstract_store
-      a.instance.initializers.reject! { |initializer| skipped_initializers.include? initializer.name }
-
-      a.instance.initialize!
-      a.load_controllers!
-      a.routes.draw do
-        resources :items
-      end
-    end
-  end
+  let(:application) { api }
 
   let(:http_headers) { {'X-Auth-Token' => access_token.token } }
 
@@ -50,7 +38,7 @@ describe Intermodal::ResourceController do
   end
 
   let(:skipped_initializers) { [:add_routing_paths, :append_assets_path, :prepend_helpers_path] }
-  let(:api) do
+  let(:api_class) do
     define_class :Api, Rails::Engine do
       include Intermodal::API
 
@@ -99,6 +87,20 @@ describe Intermodal::ResourceController do
       end
 
       controllers do
+        resources :items
+      end
+    end
+  end
+
+  let(:api) do
+    api_class.tap do |a|
+      stub_warden_serializer
+      stub_abstract_store
+      a.instance.initializers.reject! { |initializer| skipped_initializers.include? initializer.name }
+
+      a.instance.initialize!
+      a.load_controllers!
+      a.routes.draw do
         resources :items
       end
     end

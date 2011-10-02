@@ -29,7 +29,8 @@ module Intermodal
 
         let(:resource_element_name) { model.name.demodulize.underscore }
         let(:collection_element_name) { resource_element_name.pluralize }
-        let(:resource) { parser.decode(model.find(model_resource.id).send("to_#{format}", :root => resource_element_name, :presenter => presenter))}
+        let(:expected_resource) { model.find(model_resource.id) }
+        let(:resource) { parser.decode(expected_resource.send("to_#{format}", :root => resource_element_name, :presenter => presenter))}
         let(:resource_id) { resource[resource_name]['id'] }
         let(:parent_ids) { parent_names.zip(model_parents.map { |m| m.id }) }
 

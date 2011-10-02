@@ -12,7 +12,7 @@ module Intermodal
       self.default_per_page = Intermodal.default_per_page
 
       initializer 'intermodal.load_presentation', :after => 'load_config_initializer' do
-        self.class.load_presentations!
+        self.load_presentations!
       end
 
       initializer 'intermodal.load_x_auth_token_warden', :before => 'load_config_initializer' do
