@@ -3,7 +3,7 @@ require 'will_paginate'
 
 module Intermodal
   # Core
-  autoload :Base,               'intermodal/base'
+  autoload :API,                'intermodal/api'
   autoload :DeclareControllers, 'intermodal/declare_controllers'
   autoload :Configuration,      'intermodal/configuration'
 

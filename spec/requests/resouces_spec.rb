@@ -51,7 +51,8 @@ describe Intermodal::ResourceController do
 
   let(:skipped_initializers) { [:add_routing_paths, :append_assets_path, :prepend_helpers_path] }
   let(:api) do
-    define_class :Api, Intermodal::Base do
+    define_class :Api, Rails::Engine do
+      include Intermodal::API
 
       def initializers
         @initializers ||= self.class.initializers_for(self)
