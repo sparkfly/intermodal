@@ -103,7 +103,6 @@ describe Intermodal::ResourceController do
       a.instance.initializers.reject! { |initializer| skipped_initializers.include? initializer.name }
 
       a.instance.initialize!
-      a.load_controllers!
     end
   end
 

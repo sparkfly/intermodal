@@ -15,6 +15,10 @@ module Intermodal
         self.load_presentations!
       end
 
+      initializer 'intermodal.load_controllers', :after => 'load_config_initializer' do
+        self.class.load_controllers!
+      end
+
       initializer 'intermodal.load_x_auth_token_warden', :before => 'load_config_initializer' do
         Warden::Strategies.add(:x_auth_token) do
           def valid?
