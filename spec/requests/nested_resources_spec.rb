@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'tsort'
 
 describe Intermodal::NestedResourceController do
   include Intermodal::RSpec::Resources
