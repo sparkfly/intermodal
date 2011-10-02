@@ -41,37 +41,7 @@ describe Intermodal::ResourceController do
   let(:api_class) do
     define_class :Api, Rails::Engine do
       include Intermodal::API
-
-      def initializers
-        @initializers ||= self.class.initializers_for(self)
-      end
-
-      def initialize!
-        raise "Application has been already initialized." if @initialized
-        run_initializers(self)
-        @initialized = true
-        self
-      end
-
-      def config
-        @config ||= Rails::Engine::Configuration.new(File.dirname(__FILE__))
-      end
-
-      # TODO:
-      # For some reason, Rails::Railstie::Configurable does not
-      # pick up routes within the engine. I don't know if this
-      # has to do with the way I loaded the API in specs, or
-      # if there is a bug in Rails. I'm leaving this here for
-      # now.
-      def self.routes
-        instance.routes
-      end
-
-      def routes
-        @routes ||= ActionDispatch::Routing::RouteSet.new
-        @routes.append(&Proc.new) if block_given?
-        @routes
-      end
+      include SpecHelpers::Epiphyte
 
       map_data do
         presentation_for :item do
