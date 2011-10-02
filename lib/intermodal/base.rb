@@ -8,10 +8,8 @@ module Intermodal
     self.max_per_page = Intermodal.max_per_page
     self.default_per_page = Intermodal.default_per_page
 
-    def self.inherited(klass)
-      initializer 'intermodal.load_presentation', :after => 'load_config_initializer' do
-        klass.load_presentations!
-      end
+    initializer 'intermodal.load_presentation', :after => 'load_config_initializer' do
+      load_presentations!
     end
 
     initializer 'intermodal.load_x_auth_token_warden', :before => 'load_config_initializer' do
