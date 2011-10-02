@@ -89,6 +89,10 @@ describe Intermodal::ResourceController do
       controllers do
         resources :items
       end
+
+      routes.draw do
+        resources :items
+      end
     end
   end
 
@@ -100,9 +104,6 @@ describe Intermodal::ResourceController do
 
       a.instance.initialize!
       a.load_controllers!
-      a.routes.draw do
-        resources :items
-      end
     end
   end
 
