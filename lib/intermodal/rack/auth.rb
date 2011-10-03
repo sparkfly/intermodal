@@ -17,10 +17,10 @@ module Intermodal
         #     You can inherit from Intermodal::Auth::AccessToken
         # (3) Add to routes:
         #     match '/auth', :to => Intermodal::Rack::Auth
-        
+
         def call(env)
-          return UNAUTHORIZED unless valid?(env) && ( account = AccessCredential.authenticate!(env[IDENTITY], env[KEY]))
-          access_token = AccessToken.generate!(account)
+          return UNAUTHORIZED unless valid?(env) && ( account = ::AccessCredential.authenticate!(env[IDENTITY], env[KEY]))
+          access_token = ::AccessToken.generate!(account)
           [ 204, { 'X-Auth-Token' => access_token.to_s }, '']
         end
       end

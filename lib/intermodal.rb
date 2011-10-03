@@ -1,9 +1,11 @@
+require 'active_support'
 require 'will_paginate'
 
 module Intermodal
   # Core
-  autoload :Base,               'intermodal/base'
+  autoload :API,                'intermodal/api'
   autoload :DeclareControllers, 'intermodal/declare_controllers'
+  autoload :Configuration,      'intermodal/configuration'
 
   module Mapping
     autoload :Mapper,    'intermodal/mapping/mapper'
@@ -24,20 +26,17 @@ module Intermodal
   # Authentication
   # TOOD: Make this more configurable. Not everyone wants X-Auth-Token auth
   module Rack
-    autoload :Auth, 'intermodal/rack/auth'
+    autoload :Auth,   'intermodal/rack/auth'
+    autoload :Rescue, 'intermodal/rack/rescue'
   end
 
-  ActiveSupport.on_load(:before_initialize) do
-    Warden::Strategies.add(:x_auth_token) do
-      def valid?
-        env['HTTP_X_AUTH_TOKEN']
-      end
-
-      def authenticate!
-        a = AccessToken.authenticate!(env['HTTP_X_AUTH_TOKEN'])
-        a.nil? ? fail!("Could not log in") : success!(a)
-      end
-    end
+  # Authentication currently require two models
+  # Credentials are like passwords.
+  # Tokens are like cookie sessions. It currently stores against Redis
+  module Models
+    autoload :Account,          'intermodal/concerns/models/account'
+    autoload :AccessCredential, 'intermodal/concerns/models/access_credential'
+    autoload :AccessToken,      'intermodal/concerns/models/access_token'
   end
 
   # Concerns
@@ -68,12 +67,30 @@ module Intermodal
     autoload :NamedResource, 'intermodal/concerns/presenters/named_resource'
   end
 
+  module Proxies
+    autoload :LinkingResources, 'intermodal/proxies/linking_resources'
+  end
+
   # Extensions
   ActiveSupport.on_load(:after_initialize) do
     # Make sure this loads after Will Paginate loads
-    require 'intermodal/will_paginate/collection'
+    require 'intermodal/proxies/will_paginate'
 
-    ::WillPaginate::Collection.send(:include, Intermodal::WillPaginate::Collection)
+    ::WillPaginate::Collection.send(:include, Intermodal::Proxies::WillPaginate::Collection)
+  end
+
+  # Rspec Macros
+  module RSpec
+    # Models
+    autoload :Accountability,    'intermodal/rspec/models/accountability'
+    autoload :HasParentResource, 'intermodal/rspec/models/has_parent_resource'
+    autoload :ResourceLinking,   'intermodal/rspec/models/resource_linking'
+
+    # Requests
+    autoload :Rack,              'intermodal/rspec/requests/rack'
+    autoload :HTTP,              'intermodal/rspec/requests/rfc2616_status_codes'
+    autoload :Resources,         'intermodal/rspec/requests/resources'
+    autoload :LinkedResources,   'intermodal/rspec/requests/linked_resources'
   end
 end
 

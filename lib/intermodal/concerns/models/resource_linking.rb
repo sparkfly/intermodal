@@ -45,7 +45,7 @@ module Intermodal
             end
 
             # Links parent resource and target resource
-            class_inheritable_accessor :target_resource_name, :target_resource_class_name, :parent_resource_name, :parent_resource_class_name
+            class_attribute :target_resource_name, :target_resource_class_name, :parent_resource_name, :parent_resource_class_name
 
             def self.parent_model
               (parent_resource_class_name || parent_resource_name.to_s.camelize).constantize

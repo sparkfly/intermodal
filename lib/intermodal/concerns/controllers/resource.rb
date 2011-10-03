@@ -9,7 +9,7 @@ module Intermodal
 
         respond_to :json, :xml
 
-        class_inheritable_accessor :model, :collection_name, :api
+        class_attribute :model, :collection_name, :api
 
         let(:collection) { raise 'You must define collection' }
         let(:resource) { raise 'You must define resource' }
@@ -27,7 +27,7 @@ module Intermodal
         let(:collection_name) { self.class.collection_name.to_s } # TODO: This might already be defined in Rails 3.x
         let(:resource_name) {collection_name.singularize }
         let(:model_name) { model.name.underscore.to_sym }
-        
+
         # Wrap JSON with root key?
         let(:presentation_root) { resource_name }
         let(:presentation_scope) { nil } # Will default to :default scope

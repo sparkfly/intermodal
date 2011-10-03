@@ -1,3 +1,5 @@
+require 'warden'
+
 module Intermodal
   module Controllers
     module Accountability

@@ -3,77 +3,65 @@ module Intermodal
     module DSL
       extend ActiveSupport::Concern
 
-      included do
-        class_inheritable_accessor :_presentation_description, :_presenters, :_acceptors
+      attr_accessor :_presentation_description, :_presenters, :_acceptors
+
+      # DSL
+      def map_data(&blk)
+        self._presentation_description = blk
       end
 
-      module ClassMethods
-        # DSL
-        def map_data(&blk)
-          self._presentation_description = blk
+      def mapping_for(resource, mapper, &customizations)
+        Class.new(mapper).tap do |template|
+          template.api = self
+          template._property_mappings = {}
+          template.instance_eval(&customizations)
         end
+      end
 
-        # TODO: Consolidate with acceptance_for
-        def presentation_for(resource, &customizations)
-          model = resource.to_s.camelize.constantize
+      def presentation_for(resource, &customizations)
+        presenters[resource.to_sym] = mapping_for(resource, Presenter, &customizations)
+      end
 
-          model.send(:include, Intermodal::Models::Presentation)
-          presenter_template = Class.new(Presenter)
-          presenter_template.api = self
-          presenter_template._property_mappings = {}
-          presenter_template.instance_eval(&customizations)
-          presenters[resource.to_sym] = presenter_template
-        end
+      def acceptance_for(resource, &customizations)
+        acceptors[resource.to_sym] = mapping_for(resource, Acceptor, &customizations)
+      end
 
-        # TODO: Consolidate with presentation_for
-        def acceptance_for(resource, &customizations)
-          model = resource.to_s.camelize.constantize
+      # Setup
+      def load_presentations!
+        self._presentation_description.call
+      end
 
-          #model.send(:include, Models::Acceptance)
-          acceptor = Class.new(Acceptor)
-          acceptor.api = self
-          acceptor._property_mappings = {}
-          acceptor.instance_eval(&customizations)
-          acceptors[resource.to_sym] = acceptor
-        end
+      # Accessors
+      def presenters
+        self._presenters ||= {}
+      end
 
-        # Setup
-        def load_presentations!
-          self._presentation_description.call
-        end
+      def presenter_for(model)
+        presenters[model_name(model)]
+      end
 
-        # Accessors
-        def presenters
-          self._presenters ||= {}
-        end
+      def acceptors
+        self._acceptors ||= {}
+      end
 
-        def presenter_for(model)
-          presenters[model_name(model)]
-        end
+      def acceptor_for(model)
+        acceptors[model_name(model)]
+      end
 
-        def acceptors
-          self._acceptors ||= {}
-        end
+      def model_name(model)
+        model.name.underscore.to_sym
+      end
 
-        def acceptor_for(model)
-          acceptors[model_name(model)]
-        end
+      def resource_name(resource)
+        model_name(resource.class)
+      end
 
-        def model_name(model)
-          model.name.underscore.to_sym
-        end
+      def presents_resource(resource, options = {})
+        presenters[resource_name(resource)].call(resource, options)
+      end
 
-        def resource_name(resource)
-          model_name(resource.class)
-        end
-
-        def presents_resource(resource, options = {}) 
-          presenters[resource_name(resource)].call(resource, options)
-        end
-
-        def accepts_resource(resource, options = {}) 
-          accepts[resource_name(resource)].call(resource, options)
-        end
+      def accepts_resource(resource, options = {})
+        accepts[resource_name(resource)].call(resource, options)
       end
     end
   end

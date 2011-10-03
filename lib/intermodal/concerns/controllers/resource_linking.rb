@@ -4,7 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       included do
-        class_inheritable_accessor :api
+        class_attribute :api
 
         include Intermodal::Controllers::Accountability
         include Intermodal::Controllers::Anonymous
@@ -12,13 +12,31 @@ module Intermodal
         respond_to :json, :xml
         self.responder = ResourceResponder
 
+        let(:parent_id) { params[:id] }
         let(:collection_name) { self.class.collection_name.to_s } # TODO: This might already be defined in Rails 3.x
-        let(:presentation_root) { collection_name }
+        let(:collection) { model.get(:all, :parent_id => parent_id).to_target_ids }
+
+        # :target_element_name: Params key for list of linked resource ids
+        let(:target_element_name) { "#{target_resource_name.to_s.singularize}_ids" }
+
+        # :accepted_params: All attribute and values for resource
+        let(:accepted_params) { params[parent_resource_name] || {} }
+
+        # :target_ids: List of ids extracted from params
+        let(:target_ids) { accepted_params[target_element_name] }
+
+        let(:presentation_root) { parent_resource_name }
         let(:presentation_scope) { nil } # Will default to :default scope
+        let(:presented_collection) do
+          Intermodal::Proxies::LinkingResources.new presentation_root,
+            :to => target_resource_name,
+            :with => collection,
+            :parent_id => parent_id
+        end
       end
 
       def index
-        respond_with model.get(:all, :parent_id => params[:id]).to_target_ids
+        respond_with presented_collection
       end
 
       def create

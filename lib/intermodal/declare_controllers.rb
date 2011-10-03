@@ -17,13 +17,13 @@ module Intermodal
       _namespace = _module(parent_name)
       controller_name = _controller_name(name)
 
-      _create_controller(name, controller_name, blk, 
-                         :ancestor => Intermodal::NestedResourceController, 
+      _create_controller(name, controller_name, blk,
+                         :ancestor => Intermodal::NestedResourceController,
                          :namespace => _namespace,
                          :model => options[:model],
                          :parent_resource_name => _parent_resource_name,
                          :parent_model => _parent_model,
-                         :api => self) 
+                         :api => self)
     end
 
     def link_resources_from(parent_name, options = {}, &blk)
@@ -38,16 +38,17 @@ module Intermodal
 
       customize_linking_resource = proc do
         let(:model) { _model }
-        let(:target_ids) { params[_target_resource_name] }
+        let(:parent_resource_name) { _parent_resource_name }
+        let(:target_resource_name) { _target_resource_name }
       end
 
-      controller = _create_controller(collection_name, controller_name, customize_linking_resource, 
-                                      :ancestor => Intermodal::LinkingResourceController, 
+      controller = _create_controller(collection_name, controller_name, customize_linking_resource,
+                                      :ancestor => Intermodal::LinkingResourceController,
                                       :namespace => _namespace,
                                       :model => _model,
                                       :parent_resource => _parent_resource_name,
                                       :parent_model => _parent_model,
-                                      :api => self) 
+                                      :api => self)
       controller.instance_eval(&blk) if blk
     end
 
@@ -63,7 +64,6 @@ module Intermodal
       _unload_controller_if_exists(controller_name, _namespace)
       controller = Class.new(_ancestor)
       _namespace.const_set(controller_name, controller)
-      Rails.logger.warn "Creating new resource controller: #{_namespace}::#{controller}"
 
       controller.collection_name = collection_name
       controller.model = options[:model] if options[:model]
@@ -72,7 +72,6 @@ module Intermodal
       controller.class_eval(&customizations) if customizations
       controller.api = options[:api] if options[:api]
 
-      Rails.logger.info "New class: #{controller.inspect}: #{controller.controller_name}"
       controller
     end
 
@@ -95,11 +94,7 @@ module Intermodal
     end
 
     def _unload_controller_if_exists(controller_name, _namespace = Object)
-      begin
-        _namespace.send(:remove_const, controller_name) if _namespace.const_defined?(controller_name) # Unload existing class
-      rescue Exception => err
-        Rails.logger.warn "Unable to unload #{controller_name}: #{err.inspect}"
-      end
+      _namespace.send(:remove_const, controller_name) if _namespace.const_defined?(controller_name) # Unload existing class
     end
   end
 end
