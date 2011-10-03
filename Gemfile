@@ -6,6 +6,7 @@ gem 'warden'
 
 group :test do
   gem 'awesome_print'
+  gem 'pry'
   gem 'rspec'
   gem 'rspec-rails'
   gem 'rspec-core', '= 2.6.4' # Pre 2.6.4 has bugs with $LOAD_PATH
