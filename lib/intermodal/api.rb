@@ -34,6 +34,8 @@ module Intermodal
 
       def default_middleware_stack
         ActionDispatch::MiddlewareStack.new.tap do |middleware|
+          middleware.use ::Intermodal::Rack::Rescue
+
           middleware.use ::Rack::Lock
           middleware.use ::Rack::Runtime
           middleware.use ::Rails::Rack::Logger

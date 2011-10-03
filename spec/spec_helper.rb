@@ -10,11 +10,15 @@ require 'database_cleaner'
 require 'machinist/active_record'
 require 'redis'
 require 'ap' # Debugging
+require 'pry'
 
 
 # Usage:
 # variable_to_watch.tap(&WATCH)
 WATCH = lambda { |o| ap o } unless defined?(WATCH)
+
+# Log to stderr
+Rails.logger = ActiveSupport::BufferedLogger.new($stderr, ActiveSupport::BufferedLogger::Severity::ERROR)
 
 # Turn this on for debugging
 ActiveRecord::Migration.verbose = false

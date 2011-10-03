@@ -42,6 +42,9 @@ module Intermodal
 
         let(:request_json_payload) { { resource_element_name => request_payload }.to_json }
         let(:request_xml_payload) { request_payload.to_xml(:root => resource_element_name) }
+
+        let(:malformed_json_payload) { '{ "bad": [ "data": ] }' }
+        let(:malformed_xml_payload) { '<bad><data></bad></data>' }
       end
 
       module ClassMethods
@@ -172,6 +175,13 @@ module Intermodal
           request_resource_action(:create, options) do
             it "should return the newly created #{metadata[:resource_name]}" do
               body.should eql(parser.decode(model.find(body[resource_name]['id']).send("to_#{format}", { :presenter => presenter, :root => resource_element_name})))
+            end
+
+            context "with malformed #{metadata[:format]} payload" do
+              let(:request_raw_payload) { send("malformed_#{format}_payload") }
+
+              expects_status(400)
+              expects_content_type(options[:mime_type], options[:encoding]) 
             end
 
             instance_eval(&additional_examples) if additional_examples

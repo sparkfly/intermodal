@@ -26,7 +26,8 @@ module Intermodal
   # Authentication
   # TOOD: Make this more configurable. Not everyone wants X-Auth-Token auth
   module Rack
-    autoload :Auth, 'intermodal/rack/auth'
+    autoload :Auth,   'intermodal/rack/auth'
+    autoload :Rescue, 'intermodal/rack/rescue'
   end
 
   # Authentication currently require two models
