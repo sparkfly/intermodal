@@ -11,15 +11,15 @@ module Intermodal
       self.max_per_page = Intermodal.max_per_page
       self.default_per_page = Intermodal.default_per_page
 
-      initializer 'intermodal.load_presentation', :after => 'load_config_initializer' do
+      initializer 'intermodal.load_presentation', :after => 'eager_load!' do
         self.load_presentations!
       end
 
-      initializer 'intermodal.load_controllers', :after => 'load_config_initializer' do
+      initializer 'intermodal.load_controllers', :after => 'eager_load!' do
         self.class.load_controllers!
       end
 
-      initializer 'intermodal.load_x_auth_token_warden', :before => 'load_config_initializer' do
+      initializer 'intermodal.load_x_auth_token_warden', :before => 'build_middleware_stack' do
         Warden::Strategies.add(:x_auth_token) do
           def valid?
             env['HTTP_X_AUTH_TOKEN']
@@ -59,6 +59,18 @@ module Intermodal
           middleware.use ::Rack::MethodOverride
           middleware.use ::ActionDispatch::Head
         end
+      end
+
+      # Epiphyte (hack)
+      # Apparently, Rails does not want you to define routes within the engine itself
+      def self.routes
+        instance.routes
+      end
+
+      def routes
+        @routes ||= ActionDispatch::Routing::RouteSet.new
+        @routes.append(&Proc.new) if block_given?
+        @routes
       end
     end
   end

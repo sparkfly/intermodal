@@ -24,16 +24,6 @@ module SpecHelpers
       def config
         @config ||= Rails::Engine::Configuration.new(File.dirname(__FILE__))
       end
-
-      def self.routes
-        instance.routes
-      end
-
-      def routes
-        @routes ||= ActionDispatch::Routing::RouteSet.new
-        @routes.append(&Proc.new) if block_given?
-        @routes
-      end
     end
   end
 end
