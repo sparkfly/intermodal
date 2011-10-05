@@ -56,10 +56,11 @@ module Intermodal
           end
         end
 
-        def concerned_with_parent_resource(parent_resource_name, options = {}, &blk)
+        def concerned_with_parent_resource(_parent_resource_name, options = {}, &blk)
           extra_get_examples = options[:extra_get_examples]
 
-          context "when concerned with parent resource #{parent_resource_name}" do
+          context "when concerned with parent resource #{_parent_resource_name}" do
+            let(:parent_resource_name) { _parent_resource_name }
             let(:parent_id_name) { "#{parent_resource_name}_id" }
             let(:parent_model) { parent_resource_name.to_s.camelize.constantize }
             let(:different_parent) { parent_model.make! }
@@ -67,10 +68,10 @@ module Intermodal
 
             instance_eval(&blk) if blk
 
-            it { should belong_to parent_resource_name } unless options[:skip_association_examples]
-            it { should validate_presence_of parent_resource_name } unless options[:skip_validation_examples]
+            it { should belong_to _parent_resource_name } unless options[:skip_association_examples]
+            it { should validate_presence_of _parent_resource_name } unless options[:skip_validation_examples]
 
-            [ :by_parent_id, :by_parent, "by_#{parent_resource_name}_id", "by_#{parent_resource_name}" ].each do |scope|
+            [ :by_parent_id, :by_parent, "by_#{_parent_resource_name}_id", "by_#{_parent_resource_name}" ].each do |scope|
               should_respond_to_scope(scope)
             end
 
