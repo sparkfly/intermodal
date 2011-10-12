@@ -36,9 +36,9 @@ module Intermodal
         ActionDispatch::MiddlewareStack.new.tap do |middleware|
           middleware.use ::Intermodal::Rack::Rescue
 
-          middleware.use ::Rack::Lock
-          middleware.use ::Rack::Runtime
-          middleware.use ::Rails::Rack::Logger
+          #middleware.use ::Rack::Lock
+          #middleware.use ::Rack::Runtime
+          #middleware.use ::Rails::Rack::Logger
           #middleware.use ::ActionDispatch::RemoteIp, config.action_dispatch.ip_spoofing_check, config.action_dispatch.trusted_proxies
           #middleware.use ::Rack::Sendfile, config.action_dispatch.x_sendfile_header
           #middleware.use ::ActionDispatch::Callbacks, !config.cache_classes
