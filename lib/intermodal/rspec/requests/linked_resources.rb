@@ -33,7 +33,7 @@ module Intermodal
                 :with => collection,
                 :parent_id => model_parents.first.id
             end
-            let(:presented_collection) { parser.parse(collection_proxy.send("to_#{format}")) }
+            let(:presented_collection) { parser.decode(collection_proxy.send("to_#{format}")) }
             instance_eval(&blk)
           end
         end
