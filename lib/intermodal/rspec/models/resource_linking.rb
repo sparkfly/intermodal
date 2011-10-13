@@ -44,8 +44,8 @@ module Intermodal
             let(:target_model_blueprint) { proc do target_model.make!(:account => account) end }
             let(:target_model_blueprint_with_different_account) { proc do target_model.make!(:account => different_account) end }
             let(:target_accounts) { targets.map(&:account) }
-            let(:target_with_different_account) { target_model_blueprint_with_different_account[] }
-            let(:targets_with_different_account) { (1..3).map { target_model_blueprint_with_different_account[] } }
+            let(:target_with_different_account) { target_model_blueprint_with_different_account.call() }
+            let(:targets_with_different_account) { (1..3).map { target_model_blueprint_with_different_account.call() } }
             let(:target_ids_with_different_account) { targets_with_different_account.map(&:id) }
 
             instance_eval(&blk) if blk
