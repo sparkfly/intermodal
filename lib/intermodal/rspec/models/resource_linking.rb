@@ -101,7 +101,7 @@ module Intermodal
             end
 
             describe '.replace' do
-              let(:replacement_targets) { (1..3).map(&target_model_blueprint) }
+              let(:replacement_targets) { (1..3).map { target_model_blueprint.call() } }
               let(:replacement_target_ids) { replacement_targets.map(&:id) }
               let(:original_target_ids) { list; parent.send(target_association_name).map(&:id) }
               let(:updated_target_ids) { model.get(:all, :parent => parent).to_target_ids }
@@ -141,7 +141,7 @@ module Intermodal
             end
 
             describe '.append' do
-              let(:additional_targets) { (1..3).map(&target_model_blueprint) }
+              let(:additional_targets) { (1..3).map { target_model_blueprint.call() } }
               let(:additional_target_ids) { additional_targets.map(&:id) }
               let(:original_target_ids) { list; parent.send(target_association_name).map(&:id) }
               let(:updated_target_ids) { parent.send(target_association_name).map(&:id) }
