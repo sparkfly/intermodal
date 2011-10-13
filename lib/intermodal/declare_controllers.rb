@@ -59,9 +59,12 @@ module Intermodal
     # API: private
     def _create_controller(collection_name, controller_name, customizations, options = {},  &blk)
       _ancestor = options[:ancestor] || ApplicationController
-      _namespace = options[:namespace] || Object
+      _namespace = options[:namespace] #|| Object
 
       _unload_controller_if_exists(controller_name, _namespace)
+
+      _namespace ||= Object
+
       controller = Class.new(_ancestor)
       _namespace.const_set(controller_name, controller)
 
@@ -93,8 +96,12 @@ module Intermodal
       end
     end
 
-    def _unload_controller_if_exists(controller_name, _namespace = Object)
-      _namespace.send(:remove_const, controller_name) if _namespace.const_defined?(controller_name) # Unload existing class
+    def _unload_controller_if_exists(controller_name, _namespace = nil)
+      full_controller_name = [_namespace, controller_name].join('::')
+
+      # I found no other good way to detect this without using eval that would work
+      # for both 1.8.7 and 1.9.2
+      (_namespace || Object).send(:remove_const, controller_name) if eval "defined? #{full_controller_name}" # Unload existing class
     end
   end
 end
