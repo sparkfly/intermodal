@@ -64,6 +64,8 @@ module Intermodal
             expects_status(201)
             expects_content_type(metadata[:mime_type], metadata[:encoding])
 
+            with_malformed_data_should_respond_with_400
+
             it "should link #{metadata[:target_resources]} to #{metadata[:parent_resource]}" do
               model_collection.should_not be_empty
               response.should_not be_empty
@@ -109,6 +111,8 @@ module Intermodal
                 updated_target_ids.should include(original_target_id)
               end
             end
+
+            with_malformed_data_should_respond_with_400
           end
         end
 
@@ -140,6 +144,8 @@ module Intermodal
                 updated_target_ids.should include(remaining_target_id)
               end
             end
+
+            with_malformed_data_should_respond_with_400
           end
         end
 

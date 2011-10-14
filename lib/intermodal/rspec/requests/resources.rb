@@ -177,13 +177,7 @@ module Intermodal
               body.should eql(parser.decode(model.find(body[resource_name]['id']).send("to_#{format}", { :presenter => presenter, :root => resource_element_name})))
             end
 
-            context "with malformed #{metadata[:format]} payload" do
-              let(:request_raw_payload) { send("malformed_#{format}_payload") }
-
-              expects_status(400)
-              expects_content_type(options[:mime_type], options[:encoding]) 
-            end
-
+            with_malformed_data_should_respond_with_400
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -198,6 +192,7 @@ module Intermodal
               end
             end
 
+            with_malformed_data_should_respond_with_400
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -213,6 +208,14 @@ module Intermodal
           end
         end
 
+        def with_malformed_data_should_respond_with_400
+          context "with malformed #{metadata[:format]} payload" do
+            let(:request_raw_payload) { send("malformed_#{format}_payload") }
+
+            expects_status(400)
+            expects_content_type(metadata[:mime_type], metadata[:encoding])
+          end
+        end
       end
     end
   end
