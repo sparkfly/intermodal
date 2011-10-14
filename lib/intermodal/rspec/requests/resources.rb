@@ -156,6 +156,7 @@ module Intermodal
               body.should eql(presented_collection)
             end
 
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -167,6 +168,7 @@ module Intermodal
               body.should eql(resource)
             end
 
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -178,6 +180,7 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -193,6 +196,7 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -204,6 +208,7 @@ module Intermodal
               lambda { model.find(resource_id) }.should raise_error(ActiveRecord::RecordNotFound)
             end
 
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -214,6 +219,22 @@ module Intermodal
 
             expects_status(400)
             expects_content_type(metadata[:mime_type], metadata[:encoding])
+          end
+        end
+
+        def expects_unauthorized_access_to_respond_with_401
+          context 'with unauthorized access credentials' do
+            let(:http_headers) { { 'X-Auth-Token' => '', 'Accept' => 'application/json' } }
+
+            expects_status(401)
+          end
+        end
+
+        def expects_json_presentation(_presenter_scope = nil)
+          let(:presenter_scope) { _presenter_scope } if _presenter_scope
+
+          it 'should present a JSON object' do
+            body.should eql(presented_resource)
           end
         end
       end

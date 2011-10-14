@@ -65,6 +65,7 @@ module Intermodal
             expects_content_type(metadata[:mime_type], metadata[:encoding])
 
             with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
 
             it "should link #{metadata[:target_resources]} to #{metadata[:parent_resource]}" do
               model_collection.should_not be_empty
@@ -113,6 +114,7 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
           end
         end
 
@@ -146,6 +148,7 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
           end
         end
 
