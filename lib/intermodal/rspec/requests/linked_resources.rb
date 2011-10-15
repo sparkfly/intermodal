@@ -39,7 +39,7 @@ module Intermodal
         end
 
         def expects_crud_for_linked_resource
-          expects_index do
+          expects_index :skip_pagination_examples => true do
             it 'should include the parent id' do
               collection.should_not be_empty
               body[resource_element_name.to_s]['id'].should eql(model_parents.first.id)

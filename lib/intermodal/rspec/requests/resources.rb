@@ -5,6 +5,8 @@ module Intermodal
 
       included do
         include Intermodal::RSpec::Rack
+        include Intermodal::RSpec::AuthenticatedRequests
+        include Intermodal::RSpec::PaginatedCollection
 
         let(:resource_collection_name) { resource_name.pluralize }
         let(:model) { resource_name.camelize.constantize }
@@ -157,6 +159,7 @@ module Intermodal
             end
 
             expects_unauthorized_access_to_respond_with_401
+            expects_pagination unless options[:skip_pagination_examples]
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -219,14 +222,6 @@ module Intermodal
 
             expects_status(400)
             expects_content_type(metadata[:mime_type], metadata[:encoding])
-          end
-        end
-
-        def expects_unauthorized_access_to_respond_with_401
-          context 'with unauthorized access credentials' do
-            let(:http_headers) { { 'X-Auth-Token' => '', 'Accept' => 'application/json' } }
-
-            expects_status(401)
           end
         end
 
