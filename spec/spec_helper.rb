@@ -3,7 +3,13 @@ $LOAD_PATH.unshift '.'
 require 'intermodal'
 require 'rails'
 require 'active_record'
+
 require 'will_paginate/active_record'
+
+# TODO: Figure out how to load this automatically through the epiphyte
+require 'intermodal/proxies/will_paginate'
+::WillPaginate::Collection.send(:include, Intermodal::Proxies::WillPaginate::Collection)
+
 require 'action_controller'
 require 'rspec-rails'
 require 'database_cleaner'
@@ -29,7 +35,7 @@ RSpec.configure do |config|
   config.mock_with :rspec
   config.filter_run :focus => true
   config.filter_run_excluding :external => true
-  config.run_all_when_everything_filtered = true 
+  config.run_all_when_everything_filtered = true
 
   # Uncomment to use with Rspec Rails
   # If you'd prefer not to run each of your examples within a transaction,

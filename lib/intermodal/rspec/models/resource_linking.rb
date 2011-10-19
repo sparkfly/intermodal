@@ -44,8 +44,8 @@ module Intermodal
             let(:target_model_blueprint) { proc do target_model.make!(:account => account) end }
             let(:target_model_blueprint_with_different_account) { proc do target_model.make!(:account => different_account) end }
             let(:target_accounts) { targets.map(&:account) }
-            let(:target_with_different_account) { target_model_blueprint_with_different_account[] }
-            let(:targets_with_different_account) { (1..3).map { target_model_blueprint_with_different_account[] } }
+            let(:target_with_different_account) { target_model_blueprint_with_different_account.call() }
+            let(:targets_with_different_account) { (1..3).map { target_model_blueprint_with_different_account.call() } }
             let(:target_ids_with_different_account) { targets_with_different_account.map(&:id) }
 
             instance_eval(&blk) if blk
@@ -101,7 +101,7 @@ module Intermodal
             end
 
             describe '.replace' do
-              let(:replacement_targets) { (1..3).map(&target_model_blueprint) }
+              let(:replacement_targets) { (1..3).map { target_model_blueprint.call() } }
               let(:replacement_target_ids) { replacement_targets.map(&:id) }
               let(:original_target_ids) { list; parent.send(target_association_name).map(&:id) }
               let(:updated_target_ids) { model.get(:all, :parent => parent).to_target_ids }
@@ -141,7 +141,7 @@ module Intermodal
             end
 
             describe '.append' do
-              let(:additional_targets) { (1..3).map(&target_model_blueprint) }
+              let(:additional_targets) { (1..3).map { target_model_blueprint.call() } }
               let(:additional_target_ids) { additional_targets.map(&:id) }
               let(:original_target_ids) { list; parent.send(target_association_name).map(&:id) }
               let(:updated_target_ids) { parent.send(target_association_name).map(&:id) }

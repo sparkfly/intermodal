@@ -48,7 +48,12 @@ module Intermodal
         def map_attribute(resource, mapped_to)
           case mapped_to
           when Symbol then resource[mapped_to]
-          when Proc then mapped_to.call(resource)
+          when Proc then
+            if mapped_to.arity == 1
+              mapped_to.call(resource)
+            else
+              mapped_to.call()
+            end
           when Array then mapped_to.inject({}) { |m, _element| m.tap { |_m| _m[_element] = map_attribute(resource, _element) } }
           end
         end

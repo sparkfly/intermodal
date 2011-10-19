@@ -11,15 +11,15 @@ module Intermodal
       self.max_per_page = Intermodal.max_per_page
       self.default_per_page = Intermodal.default_per_page
 
-      initializer 'intermodal.load_presentation', :after => 'load_config_initializer' do
+      initializer 'intermodal.load_presentation', :after => 'eager_load!' do
         self.load_presentations!
       end
 
-      initializer 'intermodal.load_controllers', :after => 'load_config_initializer' do
+      initializer 'intermodal.load_controllers', :after => 'eager_load!' do
         self.class.load_controllers!
       end
 
-      initializer 'intermodal.load_x_auth_token_warden', :before => 'load_config_initializer' do
+      initializer 'intermodal.load_x_auth_token_warden', :before => 'build_middleware_stack' do
         Warden::Strategies.add(:x_auth_token) do
           def valid?
             env['HTTP_X_AUTH_TOKEN']
@@ -36,9 +36,9 @@ module Intermodal
         ActionDispatch::MiddlewareStack.new.tap do |middleware|
           middleware.use ::Intermodal::Rack::Rescue
 
-          middleware.use ::Rack::Lock
-          middleware.use ::Rack::Runtime
-          middleware.use ::Rails::Rack::Logger
+          #middleware.use ::Rack::Lock
+          #middleware.use ::Rack::Runtime
+          #middleware.use ::Rails::Rack::Logger
           #middleware.use ::ActionDispatch::RemoteIp, config.action_dispatch.ip_spoofing_check, config.action_dispatch.trusted_proxies
           #middleware.use ::Rack::Sendfile, config.action_dispatch.x_sendfile_header
           #middleware.use ::ActionDispatch::Callbacks, !config.cache_classes
@@ -59,6 +59,18 @@ module Intermodal
           middleware.use ::Rack::MethodOverride
           middleware.use ::ActionDispatch::Head
         end
+      end
+
+      # Epiphyte (hack)
+      # Apparently, Rails does not want you to define routes within the engine itself
+      def self.routes
+        instance.routes
+      end
+
+      def routes
+        @routes ||= ActionDispatch::Routing::RouteSet.new
+        @routes.append(&Proc.new) if block_given?
+        @routes
       end
     end
   end

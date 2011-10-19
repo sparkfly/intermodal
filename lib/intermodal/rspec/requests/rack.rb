@@ -13,7 +13,7 @@ module Intermodal
         subject { response }
 
         # Define the Rack Application you are testing
-        let(:application) { fail NotImplemented, 'Must define let(:application)' }
+        let(:application) { fail NotImplementedError, 'Must define let(:application)' }
         let(:http_headers) { Hash.new }
         let(:request_headers) do
           http_headers.to_a.inject({}) do |m,kv|

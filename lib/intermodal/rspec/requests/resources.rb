@@ -5,6 +5,8 @@ module Intermodal
 
       included do
         include Intermodal::RSpec::Rack
+        include Intermodal::RSpec::AuthenticatedRequests
+        include Intermodal::RSpec::PaginatedCollection
 
         let(:resource_collection_name) { resource_name.pluralize }
         let(:model) { resource_name.camelize.constantize }
@@ -156,6 +158,8 @@ module Intermodal
               body.should eql(presented_collection)
             end
 
+            expects_unauthorized_access_to_respond_with_401
+            expects_pagination unless options[:skip_pagination_examples]
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -167,6 +171,7 @@ module Intermodal
               body.should eql(resource)
             end
 
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -177,13 +182,8 @@ module Intermodal
               body.should eql(parser.decode(model.find(body[resource_name]['id']).send("to_#{format}", { :presenter => presenter, :root => resource_element_name})))
             end
 
-            context "with malformed #{metadata[:format]} payload" do
-              let(:request_raw_payload) { send("malformed_#{format}_payload") }
-
-              expects_status(400)
-              expects_content_type(options[:mime_type], options[:encoding]) 
-            end
-
+            with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -198,6 +198,8 @@ module Intermodal
               end
             end
 
+            with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
@@ -209,10 +211,27 @@ module Intermodal
               lambda { model.find(resource_id) }.should raise_error(ActiveRecord::RecordNotFound)
             end
 
+            expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
         end
 
+        def with_malformed_data_should_respond_with_400
+          context "with malformed #{metadata[:format]} payload" do
+            let(:request_raw_payload) { send("malformed_#{format}_payload") }
+
+            expects_status(400)
+            expects_content_type(metadata[:mime_type], metadata[:encoding])
+          end
+        end
+
+        def expects_json_presentation(_presenter_scope = nil)
+          let(:presenter_scope) { _presenter_scope } if _presenter_scope
+
+          it 'should present a JSON object' do
+            body.should eql(presented_resource)
+          end
+        end
       end
     end
   end

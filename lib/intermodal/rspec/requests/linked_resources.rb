@@ -33,13 +33,13 @@ module Intermodal
                 :with => collection,
                 :parent_id => model_parents.first.id
             end
-            let(:presented_collection) { parser.parse(collection_proxy.send("to_#{format}")) }
+            let(:presented_collection) { parser.decode(collection_proxy.send("to_#{format}")) }
             instance_eval(&blk)
           end
         end
 
         def expects_crud_for_linked_resource
-          expects_index do
+          expects_index :skip_pagination_examples => true do
             it 'should include the parent id' do
               collection.should_not be_empty
               body[resource_element_name.to_s]['id'].should eql(model_parents.first.id)
@@ -63,6 +63,9 @@ module Intermodal
 
             expects_status(201)
             expects_content_type(metadata[:mime_type], metadata[:encoding])
+
+            with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
 
             it "should link #{metadata[:target_resources]} to #{metadata[:parent_resource]}" do
               model_collection.should_not be_empty
@@ -109,6 +112,9 @@ module Intermodal
                 updated_target_ids.should include(original_target_id)
               end
             end
+
+            with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
           end
         end
 
@@ -140,6 +146,9 @@ module Intermodal
                 updated_target_ids.should include(remaining_target_id)
               end
             end
+
+            with_malformed_data_should_respond_with_400
+            expects_unauthorized_access_to_respond_with_401
           end
         end
 

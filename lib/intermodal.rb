@@ -87,10 +87,12 @@ module Intermodal
     autoload :ResourceLinking,   'intermodal/rspec/models/resource_linking'
 
     # Requests
-    autoload :Rack,              'intermodal/rspec/requests/rack'
-    autoload :HTTP,              'intermodal/rspec/requests/rfc2616_status_codes'
-    autoload :Resources,         'intermodal/rspec/requests/resources'
-    autoload :LinkedResources,   'intermodal/rspec/requests/linked_resources'
+    autoload :Rack,                  'intermodal/rspec/requests/rack'
+    autoload :HTTP,                  'intermodal/rspec/requests/rfc2616_status_codes'
+    autoload :AuthenticatedRequests, 'intermodal/rspec/requests/authenticated_requests'
+    autoload :PaginatedCollection,   'intermodal/rspec/requests/paginated_collection'
+    autoload :Resources,             'intermodal/rspec/requests/resources'
+    autoload :LinkedResources,       'intermodal/rspec/requests/linked_resources'
   end
 end
 
