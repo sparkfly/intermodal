@@ -113,6 +113,13 @@ module Intermodal
             end
           end
         end
+
+        def expects_empty_body
+          it "should respond with a Rack-compliant empty body" do
+            response[2].should be_empty
+            response[2].should be_respond_to(:each)
+          end
+        end
       end
     end
   end

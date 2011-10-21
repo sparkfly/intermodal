@@ -21,7 +21,7 @@ module Intermodal
         def call(env)
           return UNAUTHORIZED unless valid?(env) && ( account = ::AccessCredential.authenticate!(env[IDENTITY], env[KEY]))
           access_token = ::AccessToken.generate!(account)
-          [ 204, { 'X-Auth-Token' => access_token.to_s }, '']
+          [ 204, { 'X-Auth-Token' => access_token.to_s }, []]
         end
       end
     end
