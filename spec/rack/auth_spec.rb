@@ -30,6 +30,7 @@ describe Intermodal::Rack::Auth do
 
     request :get, '/' do
       expects_status(401)
+      expects_empty_body # Make sure returned body responds to #each (String has no #each in 1.9)
     end
   end
 
@@ -43,6 +44,7 @@ describe Intermodal::Rack::Auth do
 
     request :get, '/' do
       expects_status(401)
+      expects_empty_body # Make sure returned body responds to #each (String has no #each in 1.9)
     end
   end
 

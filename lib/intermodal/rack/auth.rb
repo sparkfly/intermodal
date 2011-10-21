@@ -1,7 +1,7 @@
 module Intermodal
   module Rack
     class Auth
-      UNAUTHORIZED = [401, {}, ""]
+      UNAUTHORIZED = [401, {}, []]
       IDENTITY='HTTP_X_AUTH_IDENTITY'
       KEY='HTTP_X_AUTH_KEY'
 
