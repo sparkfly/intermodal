@@ -40,9 +40,6 @@ module Intermodal
         let(:model) { _model }
         let(:parent_resource_name) { _parent_resource_name }
         let(:target_resource_name) { _target_resource_name }
-        let(:target_element_name) { "#{target_resource_name.to_s.singularize}_ids" }
-        let(:accepted_params) { params[parent_resource_name] || {} }
-        let(:target_ids) { accepted_params[target_element_name] }
       end
 
       controller = _create_controller(collection_name, controller_name, customize_linking_resource,
