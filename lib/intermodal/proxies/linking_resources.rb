@@ -19,7 +19,7 @@ module Intermodal
     #   </books>
     #
     class LinkingResources
-      attr_accessor :parent_resource_name, :linked_resource_name, :collection
+      attr_accessor :parent_resource_name, :linked_resource_name, :collection, :parent_id
       delegate :to_a, :to => :collection
 
       # USAGE:
@@ -28,6 +28,7 @@ module Intermodal
         @parent_resource_name = parent_resource_name
         @collection = options[:with]
         @linked_resource_name = options[:to]
+        @parent_id = (options[:parent_id] ? options[:parent_id].to_i : nil ) # nil should be nil, not 0
       end
 
       def to_json(options = {})
@@ -45,7 +46,7 @@ module Intermodal
       end
 
       def presentation
-        { linked_resource_element_name => collection.to_a }
+        { linked_resource_element_name => collection.to_a, :id => parent_id }
       end
 
       def linked_resource_element_name

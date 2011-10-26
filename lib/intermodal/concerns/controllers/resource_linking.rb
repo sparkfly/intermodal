@@ -12,8 +12,9 @@ module Intermodal
         respond_to :json, :xml
         self.responder = ResourceResponder
 
+        let(:parent_id) { params[:id] }
         let(:collection_name) { self.class.collection_name.to_s } # TODO: This might already be defined in Rails 3.x
-        let(:collection) { model.get(:all, :parent_id => params[:id]).to_target_ids }
+        let(:collection) { model.get(:all, :parent_id => parent_id).to_target_ids }
 
         # :target_element_name: Params key for list of linked resource ids
         let(:target_element_name) { "#{target_resource_name.to_s.singularize}_ids" }
@@ -29,7 +30,8 @@ module Intermodal
         let(:presented_collection) do
           Intermodal::Proxies::LinkingResources.new presentation_root,
             :to => target_resource_name,
-            :with => collection
+            :with => collection,
+            :parent_id => parent_id
         end
       end
 
