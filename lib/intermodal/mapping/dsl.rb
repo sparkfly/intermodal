@@ -18,11 +18,11 @@ module Intermodal
         end
       end
 
-      def presentation_for(resource, &customizations)
+      def presentation_for(resource, options = {},  &customizations)
         presenters[resource.to_sym] = mapping_for(resource, Presenter, &customizations)
       end
 
-      def acceptance_for(resource, &customizations)
+      def acceptance_for(resource, options = {}, &customizations)
         acceptors[resource.to_sym] = mapping_for(resource, Acceptor, &customizations)
       end
 
