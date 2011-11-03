@@ -47,6 +47,11 @@ module Intermodal
 
         let(:malformed_json_payload) { '{ "bad": [ "data": ] }' }
         let(:malformed_xml_payload) { '<bad><data></bad></data>' }
+
+        # Some of the test examples assume that the database is blank.
+        # For example, index tests require injecting 3 resources and expects
+        # the index endpoint to return exactly 3 resources.
+        let(:reset_datastore!) { } # Do nothing by default
       end
 
       module ClassMethods
@@ -159,7 +164,11 @@ module Intermodal
             end
 
             expects_unauthorized_access_to_respond_with_401
-            expects_pagination unless options[:skip_pagination_examples]
+            unless options[:skip_pagination_examples]
+              expects_pagination do
+                before(:each) { reset_datastore! }
+              end
+            end
             instance_eval(&additional_examples) if additional_examples
           end
         end

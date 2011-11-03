@@ -4,7 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def expects_pagination(options = {})
+        def expects_pagination(options = {}, &customizations)
           # Default behavior for will_paginate
           options[:page] ||= 1
           options[:collection_name]
@@ -20,6 +20,8 @@ module Intermodal
                 body
               end
             end
+
+            instance_eval(&customizations) if customizations
 
             if options[:empty_collection]
               it 'should have an empty collection' do
