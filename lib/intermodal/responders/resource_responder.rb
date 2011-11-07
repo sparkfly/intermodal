@@ -12,6 +12,7 @@ module Intermodal
 
     # This is the common behavior for "API" requests, like :xml and :json.
     def respond
+      return head :status => 404 unless resource
       if get?
         display resource, :root => presentation_root, :presenter => presenter, :scope => presentation_scope
       elsif has_errors?

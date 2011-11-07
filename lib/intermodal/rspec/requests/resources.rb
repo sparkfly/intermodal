@@ -141,7 +141,7 @@ module Intermodal
 
         def request_resource_action(action, options = {}, &blk)
           options = {
-            :mime_type => metadata[:mime_type], 
+            :mime_type => metadata[:mime_type],
             :encoding => metadata[:encoding],
             :status => STANDARD_SUCCESSFUL_STATUS_FOR[action],
             :collection_url => metadata[:collection_url],
@@ -178,6 +178,11 @@ module Intermodal
             it "should return a #{metadata[:resource_name]} of id 1" do
               resource.should_not be_nil
               body.should eql(resource)
+            end
+
+            context 'with non-existent resource' do
+              let(:resource_id) { 0 } # Assumes that persisted datastore never uses id of 0
+              expects_status 404
             end
 
             expects_unauthorized_access_to_respond_with_401
