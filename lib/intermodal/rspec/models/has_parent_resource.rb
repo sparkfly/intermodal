@@ -106,19 +106,19 @@ module Intermodal
               end
 
               it 'should not find resource scoped to a different parent' do
-                model.get(subject.id, :parent => different_parent).should be_nil
+                lambda { model.get(subject.id, :parent => different_parent) }.should raise_error(ActiveRecord::RecordNotFound)
               end
 
               it 'should not find resource scoped to a different parent id' do
-                model.get(subject.id, :parent_id => different_parent.id).should be_nil
+                lambda { model.get(subject.id, :parent_id => different_parent.id) }.should raise_error(ActiveRecord::RecordNotFound)
               end
 
               it 'should not find resource scoped to a parent in a different account' do
-                model.get(subject.id, :parent_id => parent_with_different_account.id, :account_id => account).should be_nil
+                lambda { model.get(subject.id, :parent_id => parent_with_different_account.id, :account_id => account) }.should raise_error(ActiveRecord::RecordNotFound)
               end
 
               it 'should not find resource scoped to a correct parent but incorrect account' do
-                model.get(subject.id, :parent_id => subject.send(parent_resource_name).id, :account_id => different_account).should be_nil
+                lambda { model.get(subject.id, :parent_id => subject.send(parent_resource_name).id, :account_id => different_account) }.should raise_error(ActiveRecord::RecordNotFound)
               end
             end
 

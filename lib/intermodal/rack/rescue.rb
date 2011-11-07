@@ -9,6 +9,10 @@ module Intermodal
         [500, {}, exception.message ]
       end
 
+      rescue_from ActiveRecord::RecordNotFound do |exception|
+        [404, {}, 'Not Found' ]
+      end
+
       rescue_from MultiJson::DecodeError do |exception|
         [400, { 'Content-Type' => content_type(:json) }, { :parse_error => exception.message }.to_json]
       end

@@ -86,11 +86,11 @@ module Intermodal
               end
 
               it 'should not find resource scoped to a different account' do
-                model.get(subject.id, :account => different_account).should be_nil
+                lambda { model.get(subject.id, :account => different_account) }.should raise_error(ActiveRecord::RecordNotFound)
               end
 
               it 'should not find resource scoped to a different account id ' do
-                model.get(subject.id, :account_id => different_account.id).should be_nil
+                lambda { model.get(subject.id, :account_id => different_account.id) }.should raise_error(ActiveRecord::RecordNotFound)
               end
             end
 

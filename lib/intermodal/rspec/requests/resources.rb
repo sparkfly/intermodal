@@ -180,11 +180,7 @@ module Intermodal
               body.should eql(resource)
             end
 
-            context 'with non-existent resource' do
-              let(:resource_id) { 0 } # Assumes that persisted datastore never uses id of 0
-              expects_status 404
-            end
-
+            with_non_existent_resource_should_respond_with_404
             expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
@@ -213,6 +209,7 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            with_non_existent_resource_should_respond_with_404
             expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
@@ -225,6 +222,7 @@ module Intermodal
               lambda { model.find(resource_id) }.should raise_error(ActiveRecord::RecordNotFound)
             end
 
+            with_non_existent_resource_should_respond_with_404
             expects_unauthorized_access_to_respond_with_401
             instance_eval(&additional_examples) if additional_examples
           end
@@ -236,6 +234,13 @@ module Intermodal
 
             expects_status(400)
             expects_content_type(metadata[:mime_type], metadata[:encoding])
+          end
+        end
+
+        def with_non_existent_resource_should_respond_with_404
+          context 'with non-existent resource' do
+            let(:resource_id) { 0 } # Assumes that persisted datastore never uses id of 0
+            expects_status 404
           end
         end
 

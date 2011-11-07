@@ -35,6 +35,7 @@ module Intermodal
 
           # Force false on readonly
           _resource = _query.where(:id => _id).limit(1).readonly(false).first
+          raise ActiveRecord::RecordNotFound, "Could not find resource" unless _resource
           return _resource
         end
       end

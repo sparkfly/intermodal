@@ -119,7 +119,7 @@ module Intermodal
                 end
 
                 it 'should not link to a parent scoped to a different account' do
-                  model.replace(parent_with_different_account.id, replacement_target_ids, :account => account).should be_nil
+                  lambda { model.replace(parent_with_different_account.id, replacement_target_ids, :account => account) }.should raise_error(ActiveRecord::RecordNotFound)
                 end
 
                 it "should only accept target ids that belong to the same account" do
@@ -160,7 +160,7 @@ module Intermodal
                 end
 
                 it 'should not link to a parent scoped to a different account' do
-                  model.append(parent_with_different_account.id, additional_target_ids, :account => account).should be_nil
+                  lambda { model.append(parent_with_different_account.id, additional_target_ids, :account => account) }.should raise_error(ActiveRecord::RecordNotFound)
                 end
 
                 it "should only accept target ids that belong to the same account" do
@@ -213,7 +213,7 @@ module Intermodal
                 end
 
                 it 'should not unlink from a parent scoped to a different account' do
-                  model.remove(parent_with_different_account.id, removed_target_ids, :account => account).should be_nil
+                  lambda { model.remove(parent_with_different_account.id, removed_target_ids, :account => account) }.should raise_error(ActiveRecord::RecordNotFound)
                 end
               end
 
