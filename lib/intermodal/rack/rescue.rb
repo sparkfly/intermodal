@@ -6,11 +6,11 @@ module Intermodal
       include ActionController::Rescue
 
       rescue_from Exception do |exception|
-        [500, {}, exception.message ]
+        [500, {}, [ exception.message ] ]
       end
 
       rescue_from ActiveRecord::RecordNotFound do |exception|
-        [404, {}, 'Not Found' ]
+        [404, {}, [ 'Not Found' ] ]
       end
 
       rescue_from MultiJson::DecodeError do |exception|
