@@ -13,6 +13,13 @@ module Intermodal
         [404, {}, [ 'Not Found' ] ]
       end
 
+      # TODO: Hack. Untested.
+      if defined? ActiveResource::ResourceNotFound
+        rescue_from ActiveResource::ResourceNotFound do |exception|
+          [404, {}, [ 'Not Found' ] ]
+        end
+      end
+
       rescue_from MultiJson::DecodeError do |exception|
         [400, { 'Content-Type' => content_type(:json) }, { :parse_error => exception.message }.to_json]
       end

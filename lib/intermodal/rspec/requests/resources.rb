@@ -48,6 +48,11 @@ module Intermodal
         let(:malformed_json_payload) { '{ "bad": [ "data": ] }' }
         let(:malformed_xml_payload) { '<bad><data></bad></data>' }
 
+        # DELETE specs expect record to be deleted.
+        # Override this if you are using something such as ActiveResource:
+        # let(:record_not_found_error) { ActiveResource::ResourceNotFound }
+        let(:record_not_found_error) { ActiveRecord::RecordNotFound }
+
         # Some of the test examples assume that the database is blank.
         # For example, index tests require injecting 3 resources and expects
         # the index endpoint to return exactly 3 resources.
@@ -219,7 +224,7 @@ module Intermodal
           request_resource_action(:destroy, options) do
             it "should delete #{metadata[:resource_name]}" do
               response.should_not be(nil)
-              lambda { model.find(resource_id) }.should raise_error(ActiveRecord::RecordNotFound)
+              lambda { model.find(resource_id) }.should raise_error(record_not_found_error)
             end
 
             with_non_existent_resource_should_respond_with_404
