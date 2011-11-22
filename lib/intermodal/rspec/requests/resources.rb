@@ -33,7 +33,7 @@ module Intermodal
         let(:collection_element_name) { resource_element_name.pluralize }
         let(:expected_resource) { model.find(model_resource.id) }
         let(:persisted_resource_id) { body[resource_name]['id'] }
-        let(:fetch_resource) { model.find(persisted_resource_id) }
+        let(:resource_after_create) { model.find(persisted_resource_id) }
         let(:resource_after_update) { model.find(resource_id) }
         let(:resource_after_destroy) { resource_after_update }
         let(:resource) { parser.decode(expected_resource.send("to_#{format}", :root => resource_element_name, :presenter => presenter))}
@@ -199,7 +199,7 @@ module Intermodal
         def expects_create(options = {}, &additional_examples)
           request_resource_action(:create, options) do
             it "should return the newly created #{metadata[:resource_name]}" do
-              body.should eql(parser.decode(fetch_resource.send("to_#{format}", { :presenter => presenter, :root => resource_element_name})))
+              body.should eql(parser.decode(resource_after_create.send("to_#{format}", { :presenter => presenter, :root => resource_element_name})))
             end
 
             with_malformed_data_should_respond_with_400
