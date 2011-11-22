@@ -11,11 +11,12 @@ module Intermodal
 
           context 'when paginating' do
             let(:expected_total_pages) { collection.size/per_page + 1 }
+            let(:expected_total_entries) { collection.size }
             let(:collection_element_name) { options[:collection_name] } if options[:collection_name]
             let(:responded_collection_metadata) do
               case format
               when :xml
-                body[collection_element_name]
+                body[collection_element_name.to_s]
               else
                 body
               end
@@ -46,7 +47,7 @@ module Intermodal
 
             it 'should have total_entries' do
               collection
-              responded_collection_metadata['total_entries'].should eql(collection.size)
+              responded_collection_metadata['total_entries'].should eql(expected_total_entries)
             end
           end
         end
