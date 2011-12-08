@@ -6,7 +6,11 @@ module Intermodal
       include ActionController::Rescue
 
       rescue_from Exception do |exception|
-        [500, {}, [ exception.message ] ]
+        if defined? Rails and Rails.env == 'production'
+          [500, {}, [ "Unexpected error. Please contact support." ] ]
+        else
+          [500, {}, [ exception.message, "\n\n", exception.backtrace ] ]
+        end
       end
 
       rescue_from ActiveRecord::RecordNotFound do |exception|
