@@ -17,7 +17,7 @@ module Intermodal
 
         let(:per_page) do
           if params[:per_page]
-            params[:per_page].to_i > api.max_per_page ? params[:per_page] : api.max_per_page
+            params[:per_page].to_i <= api.max_per_page ? params[:per_page] : api.max_per_page
           else
             api.default_per_page
           end
