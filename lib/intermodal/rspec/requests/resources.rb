@@ -25,7 +25,7 @@ module Intermodal
 
         let(:collection) { model_collection }
         let(:paginated_collection) { model_collection.paginate(:page => page, :per_page => per_page) }
-        let(:presented_collection) { parser.decode(paginated_collection.send("to_#{format}", :presenter => presenter, :root => collection_element_name)) }
+        let(:presented_collection) { parser.decode(paginated_collection.send("to_#{format}", :presenter => presenter, :root => collection_element_name, :scope => presenter_scope_for_index)) }
         let(:page) { 1 }
         let(:per_page) { WillPaginate.per_page }
 
@@ -36,7 +36,9 @@ module Intermodal
         let(:resource_after_create) { model.find(persisted_resource_id) }
         let(:resource_after_update) { model.find(resource_id) }
         let(:resource_after_destroy) { resource_after_update }
-        let(:resource) { parser.decode(expected_resource.send("to_#{format}", :root => resource_element_name, :presenter => presenter))}
+        let(:resource) { parser.decode(expected_resource.send("to_#{format}", :root => resource_element_name, :presenter => presenter, :scope => presenter_scope)) }
+        let(:presenter_scope) { nil }
+        let(:presenter_scope_for_index) { presenter_scope }
         let(:resource_id) { resource[resource_name]['id'] }
         let(:parent_ids) { parent_names.zip(model_parents.map { |m| m.id }) }
 
@@ -199,7 +201,7 @@ module Intermodal
         def expects_create(options = {}, &additional_examples)
           request_resource_action(:create, options) do
             it "should return the newly created #{metadata[:resource_name]}" do
-              body.should eql(parser.decode(resource_after_create.send("to_#{format}", { :presenter => presenter, :root => resource_element_name})))
+              body.should eql(parser.decode(resource_after_create.send("to_#{format}", { :presenter => presenter, :root => resource_element_name, :scope => presenter_scope})))
             end
 
             with_malformed_data_should_respond_with_400

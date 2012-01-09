@@ -31,11 +31,12 @@ module Intermodal
         # Wrap JSON with root key?
         let(:presentation_root) { resource_name }
         let(:presentation_scope) { nil } # Will default to :default scope
+        let(:presentation_scope_for_index) { nil }
       end
 
       # Actions
       def index
-        respond_with presented_collection, :presentation_root => collection_name
+        respond_with presented_collection, :presentation_root => collection_name, :presentation_scope => presentation_scope_for_index
       end
 
       def show
