@@ -14,7 +14,10 @@ module Intermodal
         def as_json(*args)
           options = args.extract_options!
           _collection_name = options.delete(:root) || :collection
-          pagination_info.merge({ _collection_name => self.to_a.as_json(options) })
+
+          # Scrub out everything else
+          presenter_options = { :root => nil, :scope => options[:scope], :presenter => options[:presenter] }
+          pagination_info.merge({ _collection_name => self.to_a.as_json(presenter_options)})
         end
 
         # TODO: This needs its own spec

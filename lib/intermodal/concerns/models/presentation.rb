@@ -3,7 +3,6 @@ module Intermodal
     module Presentation
       extend ActiveSupport::Concern
 
-
       def as_json(opts = {})
         return presentation(opts) if opts && (opts[:presenter] || opts[:api])
         super(opts)
