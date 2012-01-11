@@ -8,6 +8,8 @@ module Intermodal
         include Intermodal::RSpec::AuthenticatedRequests
         include Intermodal::RSpec::PaginatedCollection
 
+        let(:api) { raise "Must define let(:api)" }
+
         let(:resource_collection_name) { resource_name.pluralize }
         let(:model) { resource_name.camelize.constantize }
         let(:parent_models) { parent_names.map { |p| p.to_s.singularize.camelize.constantize } }
@@ -27,7 +29,7 @@ module Intermodal
         let(:paginated_collection) { model_collection.paginate(:page => page, :per_page => per_page) }
         let(:presented_collection) { parser.decode(paginated_collection.send("to_#{format}", :presenter => presenter, :root => collection_element_name, :scope => presenter_scope_for_index)) }
         let(:page) { 1 }
-        let(:per_page) { WillPaginate.per_page }
+        let(:per_page) { api.per_page }
 
         let(:resource_element_name) { model.name.demodulize.underscore }
         let(:collection_element_name) { resource_element_name.pluralize }

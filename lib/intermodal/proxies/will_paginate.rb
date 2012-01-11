@@ -5,6 +5,7 @@ module Intermodal
 
         def pagination_info
           { :page => self.current_page.to_i,
+            :per_page => self.per_page.to_i,
             :total_pages => self.total_pages,
             :total_entries => self.total_entries }
         end
