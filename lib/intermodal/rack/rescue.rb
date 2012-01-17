@@ -9,7 +9,7 @@ module Intermodal
         if defined? Rails and Rails.env == 'production'
           [500, {}, [ "Unexpected error. Please contact support." ] ]
         else
-          [500, {}, [ exception.message, "\n\n", exception.backtrace ].tap { |a| ap a if defined? ap } ]
+          [500, {}, [ "Exception: #{exception.message}", "\n\n", exception.backtrace ].tap { |a| ap a if defined? ap } ]
         end
       end
 
