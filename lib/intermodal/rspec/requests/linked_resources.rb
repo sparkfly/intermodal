@@ -65,7 +65,20 @@ module Intermodal
             expects_content_type(metadata[:mime_type], metadata[:encoding])
 
             with_malformed_data_should_respond_with_400
+            with_nil_target_ids_should_respond_with_422
             expects_unauthorized_access_to_respond_with_401
+
+            context 'with empty payload' do
+              let(:request_payload) { { collection_element_name => [] } }
+
+              expects_status(201)
+              expects_content_type(metadata[:mime_type], metadata[:encoding])
+
+              it 'should reset resource linking' do
+                response.should_not be_empty
+                updated_target_ids.should be_empty
+              end
+            end
 
             it "should link #{metadata[:target_resources]} to #{metadata[:parent_resource]}" do
               model_collection.should_not be_empty
@@ -114,6 +127,7 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            with_nil_target_ids_should_respond_with_422
             expects_unauthorized_access_to_respond_with_401
           end
         end
@@ -148,7 +162,15 @@ module Intermodal
             end
 
             with_malformed_data_should_respond_with_400
+            with_nil_target_ids_should_respond_with_422
             expects_unauthorized_access_to_respond_with_401
+          end
+        end
+
+        def with_nil_target_ids_should_respond_with_422
+          context 'without nil ids ' do
+            let(:request_payload) { { collection_element_name => nil } }
+            expects_status(422)
           end
         end
 

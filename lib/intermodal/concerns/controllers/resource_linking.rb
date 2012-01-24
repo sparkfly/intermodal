@@ -40,14 +40,17 @@ module Intermodal
       end
 
       def create
+        return head :status => 422 unless target_ids
         respond_with model.replace(params[:id], target_ids, :account => account), :location => nil
       end
 
       def update
+        return head :status => 422 unless target_ids
         respond_with(model.append(params[:id], target_ids, :account => account))
       end
 
       def destroy
+        return head :status => 422 unless target_ids
         respond_with(model.remove(params[:id], target_ids, :account => account))
       end
     end
