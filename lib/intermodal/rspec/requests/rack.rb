@@ -15,14 +15,7 @@ module Intermodal
         # Define the Rack Application you are testing
         let(:application) { fail NotImplementedError, 'Must define let(:application)' }
         let(:http_headers) { Hash.new }
-        let(:request_headers) do
-          http_headers.to_a.inject({}) do |m,kv|
-            m.tap do |_m|
-              _h, _v = kv
-              _m["HTTP_#{_h}".underscore.upcase] = _v
-            end
-          end
-        end
+        # let(:request_headers) { rack_compliant_headers(http_headers) }
         let(:request_url_prefix) { '' }
 
         let(:response) { application.call(request) }
@@ -70,6 +63,25 @@ module Intermodal
 
         let(:expected_mime_type) { Mime::Types.lookup_by_extension(format).to_s }
         let(:expected_encoding) { 'utf-8' }
+
+        # Broken out so you can use this outside of let()
+        def rack_compliant_headers(_headers = {})
+          _headers.to_a.inject({}) do |m,kv|
+            m.tap do |_m|
+              _h, _v = kv
+              _m["HTTP_#{_h}".underscore.upcase] = _v
+            end
+          end
+        end
+
+        def rack_compliant_request(_method, _url, _headers, _body, format = :json)
+          _payload_mime_type = (format.is_a?(Symbol) ? Mime::Types.lookup_by_extension(format) : format)
+          req_opts = { :method => _method }.merge(rack_compliant_headers(_headers))
+          req_opts[:input] = _body
+          ::Rack::MockRequest.env_for(_url, req_opts).tap do |_r|
+            _r.merge!({ 'CONTENT_TYPE' => _payload_mime_type }) unless _body.nil?
+          end
+        end
       end
 
       module ClassMethods
@@ -80,18 +92,16 @@ module Intermodal
           end
         end
 
-        def rack_request(method, _url, _format = nil, &_payload) 
+        def rack_request(method, _url, _format = nil, &_payload)
           _format = _format # Scope for closure
           _payload = proc do nil end unless _payload
 
           let(:format) { _format } if _format
-          let(:request) do
-            req_opts = { :method => method }.merge(request_headers)
-            req_opts[:input] = request_raw_payload
-            r = ::Rack::MockRequest.env_for(request_url_prefix + request_url, req_opts)
-            r.merge!({ 'CONTENT_TYPE' => request_payload_mime_type }) unless request_payload.nil?
-            r # I dare you to delete this line
-          end
+          let(:request) { rack_compliant_request(method,
+                                                 request_url_prefix + request_url,
+                                                 http_headers,
+                                                 request_raw_payload,
+                                                 (request_raw_payload ? request_payload_mime_type : nil) ) }
           let(:request_url) { _url }
           let(:request_payload, &_payload)
         end

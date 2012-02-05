@@ -29,7 +29,7 @@ module Intermodal
         let(:paginated_collection) { model_collection.paginate(:page => page, :per_page => per_page) }
         let(:presented_collection) { parser.decode(paginated_collection.send("to_#{format}", :presenter => presenter, :root => collection_element_name, :scope => presenter_scope_for_index)) }
         let(:page) { 1 }
-        let(:per_page) { api.per_page }
+        let(:per_page) { api.default_per_page }
 
         let(:resource_element_name) { model.name.demodulize.underscore }
         let(:collection_element_name) { resource_element_name.pluralize }
