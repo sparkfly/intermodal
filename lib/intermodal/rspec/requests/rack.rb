@@ -79,7 +79,7 @@ module Intermodal
           req_opts = { :method => _method }.merge(rack_compliant_headers(_headers))
           req_opts[:input] = _body
           ::Rack::MockRequest.env_for(_url, req_opts).tap do |_r|
-            _r.merge!({ 'CONTENT_TYPE' => _payload_mime_type }) unless _body.nil?
+            _r.merge!({ 'CONTENT_TYPE' => _payload_mime_type.to_s }) unless _body.nil?
           end
         end
       end
