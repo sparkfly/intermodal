@@ -58,6 +58,10 @@ module Intermodal
           end
         end
 
+        def presenters
+          self.api.presenters
+        end
+
       end
     end
 
