@@ -16,7 +16,7 @@ module Intermodal
           _collection_name = options.delete(:root) || :collection
 
           # Scrub out everything else
-          presenter_options = { :root => nil, :scope => options[:scope], :presenter => options[:presenter] }
+          presenter_options = { :root => nil, :always_nest_collections => options[:always_nest_collections], :scope => options[:scope], :presenter => options[:presenter] }
           pagination_info.merge({ _collection_name => self.to_a.as_json(presenter_options)})
         end
 

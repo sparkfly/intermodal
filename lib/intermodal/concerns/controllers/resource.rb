@@ -32,6 +32,7 @@ module Intermodal
         let(:presentation_root) { resource_name }
         let(:presentation_scope) { nil } # Will default to :default scope
         let(:presentation_scope_for_index) { nil }
+        let(:always_nest_collections) { false }
       end
 
       # Actions

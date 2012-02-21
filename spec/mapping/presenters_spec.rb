@@ -82,6 +82,7 @@ describe Intermodal::Mapping::Presenter do
       end
     end
 
+    pending 'with always_nest_collection'
     context 'with arbitrary mappings' do
       let(:presenter) do
         define_class :TestPresenter, Intermodal::Mapping::Presenter do
