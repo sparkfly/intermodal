@@ -48,5 +48,9 @@ describe Intermodal::Proxies::WillPaginate::Collection do
     it 'should present total_entries' do
       subject[:total_entries].should_not be_nil
     end
+
+    it 'should present collection' do
+      subject[:collection].should_not be_nil
+    end
   end
 end
