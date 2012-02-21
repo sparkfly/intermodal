@@ -33,35 +33,69 @@ describe Intermodal::Proxies::WillPaginate::Collection do
     let(:presenter) { api_class.presenters[:item] }
     let(:collection) { Item.make!(3, :account => account) }
     let(:paginated_collection) { collection; Item.paginate :page => 1 }
-    let(:presented_collection) { paginated_collection.as_json :presenter => presenter }
+    let(:presented_collection) { paginated_collection.as_json presenter_options }
 
     let(:collection_ids) { collection.map(&:id) }
 
     let(:_ids) { ->(r) { r[:id] } }
     let(:presented_collection_ids) { presented_collection[:collection].map(&_ids) }
 
-    it 'should present page' do
-      subject[:page].should_not be_nil
+    context 'with presenter default options' do
+      let(:presenter_options) { { :presenter => presenter } }
+
+      it 'should present page' do
+        subject[:page].should_not be_nil
+      end
+
+      it 'should present per_page' do
+        subject[:per_page].should_not be_nil
+      end
+
+      it 'should present total_pages' do
+        subject[:total_pages].should_not be_nil
+      end
+
+      it 'should present total_entries' do
+        subject[:total_entries].should_not be_nil
+      end
+
+      it 'should present collection' do
+        subject[:collection].should_not be_nil
+      end
+
+      it 'should present collection of resources' do
+        presented_collection_ids.should eql(collection_ids)
+      end
     end
 
-    it 'should present per_page' do
-      subject[:per_page].should_not be_nil
-    end
+    context 'with root option' do
+      let(:presenter_options) { { :presenter => presenter, :root => root } }
+      let(:root) { :node }
+      let(:presented_collection_ids) { presented_collection[root].map(&_ids) }
 
-    it 'should present total_pages' do
-      subject[:total_pages].should_not be_nil
-    end
+      it 'should present page' do
+        subject[:page].should_not be_nil
+      end
 
-    it 'should present total_entries' do
-      subject[:total_entries].should_not be_nil
-    end
+      it 'should present per_page' do
+        subject[:per_page].should_not be_nil
+      end
 
-    it 'should present collection' do
-      subject[:collection].should_not be_nil
-    end
+      it 'should present total_pages' do
+        subject[:total_pages].should_not be_nil
+      end
 
-    it 'should present collection of resources' do
-      presented_collection_ids.should eql(collection_ids)
+      it 'should present total_entries' do
+        subject[:total_entries].should_not be_nil
+      end
+
+      it 'should present collection' do
+        subject[root].should_not be_nil
+      end
+
+      it 'should present collection of resources' do
+        presented_collection_ids.should eql(collection_ids)
+      end
     end
   end
 end
