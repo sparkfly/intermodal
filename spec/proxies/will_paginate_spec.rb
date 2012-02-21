@@ -127,5 +127,37 @@ describe Intermodal::Proxies::WillPaginate::Collection do
         presented_collection_ids.should eql(collection_ids)
       end
     end
+
+    context 'with always_nest_collections and root option' do
+      let(:presenter_options) { { :presenter => presenter, :root => root, :always_nest_collections => true } }
+      let(:root) { :nodes }
+      let(:element_name) { root.to_s.singularize }
+      let(:presented_collection_ids) { presented_collection[root].map(&_ids) }
+      let(:_ids) { ->(r) { r[element_name][:id] } }
+
+      it 'should present page' do
+        subject[:page].should_not be_nil
+      end
+
+      it 'should present per_page' do
+        subject[:per_page].should_not be_nil
+      end
+
+      it 'should present total_pages' do
+        subject[:total_pages].should_not be_nil
+      end
+
+      it 'should present total_entries' do
+        subject[:total_entries].should_not be_nil
+      end
+
+      it 'should present collection' do
+        subject[root].should_not be_nil
+      end
+
+      it 'should present collection of resources' do
+        presented_collection_ids.should eql(collection_ids)
+      end
+    end
   end
 end
