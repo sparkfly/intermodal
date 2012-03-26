@@ -10,7 +10,8 @@ SHAM = {
     Forgery::Address.country ].join(' ') } }
 
 # Load the schema before setting up the blueprints
-SpecHelpers::Schema.new(:postgresql).up!
+# Supported adapters: sqlite3 and postgresql
+SpecHelpers::Schema.new(:sqlite3).up!
 
 # Blueprints
 Account.blueprint do
