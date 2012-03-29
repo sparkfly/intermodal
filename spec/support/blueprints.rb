@@ -11,7 +11,7 @@ SHAM = {
 
 # Load the schema before setting up the blueprints
 # Supported adapters: sqlite3 and postgresql
-SpecHelpers::Schema.new(:sqlite3).up!
+SpecHelpers::Schema.new(:postgresql).up!
 
 # Blueprints
 Account.blueprint do
