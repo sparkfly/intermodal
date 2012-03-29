@@ -1,3 +1,8 @@
 .*sw?
 pkg/
 .idea/ #Rubymine preferences and settings
+
+*.gem
+.bundle
+Gemfile.lock
+pkg/*

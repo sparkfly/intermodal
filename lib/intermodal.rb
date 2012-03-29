@@ -1,3 +1,4 @@
+require 'intermodal/version'
 require 'active_support'
 require 'will_paginate'
 

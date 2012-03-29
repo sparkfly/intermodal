@@ -25,3 +25,7 @@ Rails 3.0.x
  - Integration as Rails 3.1 Engine for versioning endpoints
  - Cross-account authorization
  - Override stock Rails 3.0 error handling to produce JSON/XML instead of HTML traces
+
+=== FIXME ===
+ - Dependency on Redis in tests
+ - ? Dependency on a DB in tests? sqlite3 in-memory is fairly painless

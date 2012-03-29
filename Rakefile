@@ -1,3 +1,4 @@
+require "bundler/gem_tasks"
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
@@ -13,6 +14,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 
 desc 'Generate documentation for the foreigner plugin.'
+
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'Intermodal'
