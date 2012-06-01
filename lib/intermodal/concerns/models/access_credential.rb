@@ -13,7 +13,8 @@ module Intermodal
         belongs_to :account
 
         def self.authenticate!(identity, key)
-          ::Account.joins(:access_credentials).where(:access_credentials => { :identity => identity, :key => key }).limit(1).first
+          ## MDB -- Added check for active account (access_credentials)
+          ::Account.joins(:access_credentials).where(:access_credentials => { :identity => identity, :key => key, :active => TRUE }).limit(1).first
         end
       end
     end

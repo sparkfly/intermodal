@@ -12,7 +12,9 @@ module Intermodal
 
     let(:parent_id_name) { "#{parent_resource_name}_id".to_sym }
     let(:parent_id) { params[parent_id_name] }
-    let(:create_params) { accepted_params.merge( parent_id_name => parent_resource.id ) }
+    let(:create_params) { 
+      accepted_params.merge( parent_id_name => parent_resource.id ) 
+      }
     let(:update_params) { accepted_params }
   end
 end
