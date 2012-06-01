@@ -37,6 +37,10 @@ module Intermodal
 
       # Actions
       def index
+        puts "==============INDEX CALLED IN concerns/controller/resource.rb"
+#        puts "presented_collection = #{presented_collection.inspect}"
+#        puts "presentation_root = #{collection_name.inspect}"
+#        puts "presentation_scope = #{presentation_scope_for_index.inspect}"
         respond_with presented_collection, :presentation_root => collection_name, :presentation_scope => presentation_scope_for_index
       end
 
@@ -45,10 +49,16 @@ module Intermodal
       end
 
       def create
+        puts "----RESOURCE---CREATE"
+        puts "MODEL:",model.inspect
+        puts "CREATE_PARAMS:",create_params
         respond_with model.create(create_params)
       end
 
       def update
+        puts "----RESOURCE---UPDATE"
+        puts "MODEL:",model.inspect
+        puts "CREATE_PARAMS:",create_params
         resource.update_attributes(update_params)
         respond_with resource
       end
