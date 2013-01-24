@@ -21,7 +21,7 @@ module Intermodal
               belongs_to resource
             end
 
-            validates_presence_of resource
+            # validates_presence_of resource
 
             scope parent_resource_scope, lambda { |id| where("#{resource}_id" => id) }
             scope "by_#{resource}", lambda { |parent| send(parent_resource_scope, parent.id) }

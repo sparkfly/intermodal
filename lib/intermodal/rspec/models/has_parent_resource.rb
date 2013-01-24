@@ -69,7 +69,7 @@ module Intermodal
             instance_eval(&blk) if blk
 
             it { should belong_to _parent_resource_name } unless options[:skip_association_examples]
-            it { should validate_presence_of _parent_resource_name } unless options[:skip_validation_examples]
+            # it { should validate_presence_of _parent_resource_name } unless options[:skip_validation_examples]
 
             [ :by_parent_id, :by_parent, "by_#{_parent_resource_name}_id", "by_#{_parent_resource_name}" ].each do |scope|
               should_respond_to_scope(scope)
