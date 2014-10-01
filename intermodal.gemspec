@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
 
-  s.homepage = %q{http://github.com/hosh/intermodal}
+  s.homepage = %q{http://github.com/intermodal/intermodal}
   s.summary = %q{Intermodal lets you quickly put together a pure, JSON/XML-only RESTful web service.}
   s.description = %q{Declarative DSL for top-level, nested, linked CRUD resource endpoints; DSL for Presenters and Acceptors; API Versioning}
   s.rubyforge_project = "intermodal"
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = %w(lib)
 
 
-  s.add_runtime_dependency 'rails', '3.1.0'
+  s.add_runtime_dependency 'rails', '4.1.6'
   s.add_runtime_dependency 'will_paginate', '>= 3.0.0'
   s.add_runtime_dependency 'warden'
 
@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'rspec-core', '= 2.6.4' # Pre 2.6.4 has bugs with $LOAD_PATH
+  s.add_development_dependency 'rspec-core'
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'yajl-ruby'
   s.add_development_dependency 'database_cleaner'
