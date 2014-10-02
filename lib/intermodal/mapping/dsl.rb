@@ -3,11 +3,13 @@ module Intermodal
     module DSL
       extend ActiveSupport::Concern
 
-      attr_accessor :_presentation_description, :_presenters, :_acceptors
+      included do
+        attr_accessor :_presentation_description, :_presenters, :_acceptors
+      end
 
       # DSL
       def map_data(&blk)
-        self._presentation_description = blk
+        _presentation_description = blk
       end
 
       def mapping_for(resource, mapper, &customizations)
@@ -28,12 +30,12 @@ module Intermodal
 
       # Setup
       def load_presentations!
-        self._presentation_description.call
+        _presentation_description.call
       end
 
       # Accessors
       def presenters
-        self._presenters ||= {}
+        _presenters ||= {}
       end
 
       def presenter_for(model)
@@ -41,7 +43,7 @@ module Intermodal
       end
 
       def acceptors
-        self._acceptors ||= {}
+        _acceptors ||= {}
       end
 
       def acceptor_for(model)
