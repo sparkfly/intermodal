@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = %w(lib)
 
 
-  s.add_runtime_dependency 'rails', '4.1.6'
+  s.add_runtime_dependency 'rails', '~> 4.2.0'
   s.add_runtime_dependency 'will_paginate', '>= 3.0.0'
   s.add_runtime_dependency 'warden'
 
