@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
 
 
   s.add_runtime_dependency 'rails', '~> 4.2.0'
+  s.add_runtime_dependency 'responders', '~> 2.1.0'
   s.add_runtime_dependency 'will_paginate', '>= 3.0.0'
   s.add_runtime_dependency 'warden'
 

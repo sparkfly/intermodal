@@ -5,11 +5,19 @@ module Intermodal
 
       included do
         attr_accessor :_presentation_description, :_presenters, :_acceptors
+
+        def self.map_data(&blk)
+          self.instance.map_data(&blk)
+        end
+
+        def self.load_presentations!(&blk)
+          self.instance.load_presentations!
+        end
       end
 
       # DSL
       def map_data(&blk)
-        _presentation_description = blk
+        self._presentation_description = blk
       end
 
       def mapping_for(resource, mapper, &customizations)

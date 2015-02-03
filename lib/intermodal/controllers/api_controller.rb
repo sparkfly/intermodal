@@ -1,3 +1,5 @@
+require 'responders'
+
 module Intermodal
   class APIController < ActionController::Metal
 
@@ -11,6 +13,7 @@ module Intermodal
     include AbstractController::Callbacks
     include ActionController::Rescue
 
+    include ActionController::RespondWith
     include Intermodal::Controllers::Presentation
 
     use_renderers :json, :xml
@@ -18,7 +21,7 @@ module Intermodal
     self.responder = Intermodal::ResourceResponder
 
     # Major hax
-    def render_to_body(options) 
+    def render_to_body(options)
       _handle_render_options(options)
     end
 

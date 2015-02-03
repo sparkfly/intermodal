@@ -1,6 +1,18 @@
 module Intermodal
   module DeclareControllers
-    attr_accessor :controller_definitions
+    extend ActiveSupport::Concern
+
+    included do
+      attr_accessor :controller_definitions
+
+      def self.controllers(&blk)
+        self.instance.controllers(&blk)
+      end
+
+      def self.load_controllers!
+        self.instance.load_controllers!
+      end
+    end
 
     def controllers(&blk)
       self.controller_definitions = blk

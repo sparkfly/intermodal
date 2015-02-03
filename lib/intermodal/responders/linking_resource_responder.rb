@@ -1,3 +1,5 @@
+require 'action_controller/responder'
+
 module Intermodal
   class LinkingResourceResponder < ResourceResponder
 
