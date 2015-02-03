@@ -1,6 +1,6 @@
 module Intermodal
   module Models
-    module Account 
+    module Account
       extend ActiveSupport::Concern
 
       included do

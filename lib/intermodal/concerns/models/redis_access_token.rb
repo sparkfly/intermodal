@@ -1,6 +1,6 @@
 module Intermodal
   module Models
-    module AccessToken
+    module RedisAccessToken
       extend ActiveSupport::Concern
 
       included do
