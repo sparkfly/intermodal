@@ -13,7 +13,7 @@ module Intermodal
         belongs_to :account
 
         def self.authenticate!(token)
-          Account.joins(:access_tokens).where(:access_tokens => { :token => token }).limit(1).first
+          ::Account.joins(:access_tokens).where(:access_tokens => { :token => token }).limit(1).first
         end
 
         def self.generate!(account)
