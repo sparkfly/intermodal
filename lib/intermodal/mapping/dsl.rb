@@ -43,7 +43,7 @@ module Intermodal
 
       # Accessors
       def presenters
-        _presenters ||= {}
+        self._presenters ||= {}
       end
 
       def presenter_for(model)
@@ -51,7 +51,7 @@ module Intermodal
       end
 
       def acceptors
-        _acceptors ||= {}
+        self._acceptors ||= {}
       end
 
       def acceptor_for(model)
