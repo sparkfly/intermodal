@@ -1,6 +1,6 @@
 module Intermodal
   module Models
-    module AccessCredential 
+    module AccessCredential
       extend ActiveSupport::Concern
 
       included do

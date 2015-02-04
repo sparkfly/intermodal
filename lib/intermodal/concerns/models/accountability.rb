@@ -30,7 +30,10 @@ module Intermodal
         end
 
         def get(_id, opts = {})
-          _query = build_get_query(scoped, opts)
+          # Rails 4 no longer has .scoped, and where(nil) is the actual replacement
+          # always returning a relation
+          # See: http://stackoverflow.com/a/18199294/313193
+          _query = build_get_query(self.where(nil), opts)
           return _query if _id == :all
 
           # Force false on readonly

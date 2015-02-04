@@ -179,7 +179,7 @@ module Intermodal
 
             expects_unauthorized_access_to_respond_with_401
             unless options[:skip_pagination_examples]
-              expects_pagination do
+              expects_paginated_resource do
                 before(:each) { reset_datastore! }
               end
             end

@@ -1,3 +1,4 @@
+require 'intermodal/version'
 require 'active_support'
 require 'will_paginate'
 
@@ -26,8 +27,9 @@ module Intermodal
   # Authentication
   # TOOD: Make this more configurable. Not everyone wants X-Auth-Token auth
   module Rack
-    autoload :Auth,   'intermodal/rack/auth'
-    autoload :Rescue, 'intermodal/rack/rescue'
+    autoload :Auth,       'intermodal/rack/auth'
+    autoload :Rescue,     'intermodal/rack/rescue'
+    autoload :DummyStore, 'intermodal/rack/dummy_store'
   end
 
   # Authentication currently require two models

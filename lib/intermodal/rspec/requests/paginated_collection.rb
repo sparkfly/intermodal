@@ -4,7 +4,7 @@ module Intermodal
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def expects_pagination(options = {}, &customizations)
+        def expects_paginated_resource(options = {}, &customizations)
           # Default behavior for will_paginate
           options[:page] ||= 1
           options[:collection_name]
@@ -51,6 +51,9 @@ module Intermodal
             end
           end
         end
+
+        # Some version of WillPaginate steps on this
+        alias expects_pagination expects_paginated_resource
       end
     end
   end
